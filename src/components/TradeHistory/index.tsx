@@ -1,8 +1,10 @@
 import { useWeb3React } from "@web3-react/core"
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
+import { ControlCenterContext } from "../../contexts/ControlCenterContext"
 import { TradeHistoryInfo } from "../../dtos/TradeHistoryInfo"
 import { TradeHistoryService } from "../../services/TradeHistoryService"
+import { supportedChain } from "../../utils"
 
 const Wrapper = styled.div`
     display: grid;
@@ -29,26 +31,29 @@ const TradeType = styled.div<{type: string}>`
 `
 
 const TradeHistory = () => {
-    const { account, library } = useWeb3React()
+    const { account, library, chainId } = useWeb3React()
     const [trades, setTrades] = useState<TradeHistoryInfo[]>([])
+    const { token } = useContext(ControlCenterContext);
+    
     useEffect(() => {
-
         const addNewTrade = (trade: TradeHistoryInfo) => {
             const existingTrade = trades.find(x => x.date === trade.date && x.amount === trade.amount && x.type === trade.type)
-            if (!existingTrade)
-            {
+            if (!existingTrade) {
                 setTrades((trades) => [trade, ...trades])
             }            
         }
 
         const getTrades = async () => {
-            setTrades(await tradeHistoryService.getTrades())
-            tradeHistoryService.onSwap(addNewTrade)
+            if (supportedChain(chainId!, token)) {
+                setTrades(await tradeHistoryService.getTrades())
+                tradeHistoryService.onSwap(addNewTrade)
+            }           
         }
-        const tradeHistoryService = new TradeHistoryService(library, account!)
+
+        const tradeHistoryService = new TradeHistoryService(token, library, account!)
         getTrades()
 
-    },[account, library])
+    }, [account, library, chainId, token])
 
     return (
     <Wrapper>

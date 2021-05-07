@@ -96,6 +96,12 @@ export const transfetGateAddresses = new Map([
   [Token.upBNB, "0xDDDe5C5d1285428922bb2f8524dD1C117A3Bf313"],
 ])
 
+export const rootedTokenInBasePool = new Map([
+  [Token.ROOT, 1],
+  [Token.upTether, 0],
+  [Token.upBNB, 0],
+])
+
 export const VAULT_ADDRESS = "0xaa360Bd89Ac14533940114cf7205DdF5e0CA7fa6"
 export const IGNORE_ADDRESS = "0x4D605Ded7e5a9B22ecB8B90576Cd9b405190C1EB"
 export const BUY_BACK_ADDRESS = "0xc27c10ABf2fD6B39Cda4c5478BB2BF1E12919c99"

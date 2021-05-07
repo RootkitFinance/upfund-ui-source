@@ -4,18 +4,21 @@ import { Web3Provider } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { TradeHistoryInfo } from '../dtos/TradeHistoryInfo'
 import { getDisplayBalance } from '../utils/formatBalance'
+import { basePoolAddresses, rootedTokenInBasePool, Token } from '../constants'
 
 export class TradeHistoryService {
     contract: Contract
     library: Web3Provider
+    token: Token
 
-    constructor(library: Web3Provider, account: string) {
+    constructor(token: Token, library: Web3Provider, account: string) {
+        this.token = token;
         this.library = library;
         const signer = library.getSigner(account).connectUnchecked()
-        this.contract = new Contract("0x01f8989c1e556f5c89c7D46786dB98eEAAe82c33", uniswapV2Pair, signer)
+        this.contract = new Contract(basePoolAddresses.get(token)!, uniswapV2Pair, signer)
     }
 
-    public async onSwap(action: (trade: TradeHistoryInfo) => void){
+    public async onSwap(action: (trade: TradeHistoryInfo) => void) {
         this.contract.on("Swap", async (sender, amount0In, amount1In, amount0Out, amount1Out, to) => {
             const blockNumber = await this.library.getBlockNumber();
             this.toInfo(
@@ -31,7 +34,7 @@ export class TradeHistoryService {
     public async getTrades() {
         const blockNumber = await this.library.getBlockNumber();
         const eventFilter = this.contract.filters.Swap()       
-        const transferEvents = await this.contract.queryFilter(eventFilter, blockNumber - 100);
+        const transferEvents = await this.contract.queryFilter(eventFilter, blockNumber - 500);
         const trades = []
         for(var i = transferEvents.length - 1; i >= 0; i--)
         {
@@ -42,7 +45,6 @@ export class TradeHistoryService {
                 new BigNumber(event.args?.amount1In.toString()),
                 new BigNumber(event.args?.amount0Out.toString()),
                 new BigNumber(event.args?.amount1Out.toString())))
-
         }       
 
        return trades
@@ -51,20 +53,20 @@ export class TradeHistoryService {
     public async toInfo(blockNumber: number, amount0In: BigNumber, amount1In: BigNumber, amount0Out: BigNumber, amount1Out: BigNumber) {
         const block = await this.library.getBlock(blockNumber);
         const blockDate = new Date(block.timestamp*1000);
-        const amountIn = amount0In.isZero() ? amount1In : amount0In
-        const amountOut = amount0Out.isZero() ? amount1Out : amount0Out
-        let rootAmount
-        let type
+        
+        const netToken0 = amount0In.minus(amount0Out)
+        const netToken1 = amount1In.minus(amount1Out)
 
-        if (amountIn.gt(amountOut)) {
-            type = "buy"
-            rootAmount = amountOut
-        } 
-        else {
-            type = "sell"
-            rootAmount = amountIn
+        let rootAmount = new BigNumber(0);
+        let type = ""
+
+        if (netToken0.isNegative()) {
+            type = rootedTokenInBasePool.get(this.token)! === 0 ? "buy" : "sell";
+            rootAmount = rootedTokenInBasePool.get(this.token)! === 0 ? netToken0.abs() : netToken1.abs()
+        } else if (netToken1.isNegative()) {
+            type = rootedTokenInBasePool.get(this.token)! === 0 ? "sell" : "buy";
+            rootAmount = rootedTokenInBasePool.get(this.token)! === 0 ? netToken1.abs() : netToken0.abs()
         }
-        //formatEther()
         return new TradeHistoryInfo(blockDate.toLocaleTimeString(), type, getDisplayBalance(rootAmount))
     }
 
