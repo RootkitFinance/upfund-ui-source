@@ -299,14 +299,8 @@ const Balances = () => {
     <Wrapper>
         {balances?.map(x => (<AddressBalances key={x.address} globalLoading={loading} info={x} valid={valid}/>)) }
         <PoolBalances poolToken={baseToken} poolAddress={basePoolAddress} valid={valid}/>
-        <TwoPoolCalculatorSubFloor valid={valid}/>      
-        {false ? <> 
-        
-            <PoolBalances poolToken={baseToken} poolAddress={basePoolAddress} valid={valid}/>
         <PoolBalances poolToken={eliteToken} poolAddress={elitePoolAddress} valid={valid}/> 
-         
-        </> : null}
-        
+        <TwoPoolCalculatorSubFloor valid={valid}/>  
     </Wrapper>)
 }
 

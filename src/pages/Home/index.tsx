@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import Balances from "../../components/Balances"
 import LiquidityController from "../../components/LiquidityController"
-//import Deployer from "../../components/Deployer"
+import Deployer from "../../components/Deployer"
 import TradeHistory from "../../components/TradeHistory"
 import { Token } from "../../constants"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext"
@@ -91,7 +91,7 @@ export const Home = () => {
                     </LiquidityControllerSection>
                     <DeployerSection>
                         <SectionHeader>Deployer</SectionHeader>
-                        {/* <Deployer/> */}
+                        <Deployer/> 
                     </DeployerSection>
                     <TradeHistorySection>
                         <SectionHeader>Trade History</SectionHeader>

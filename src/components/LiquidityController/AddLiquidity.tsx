@@ -17,7 +17,7 @@ const AddLiquidity = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: stri
 
     useEffect(() => {
         const getRootBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(liquidityControllerAddresses.get(token)!, tokenAddress))
-        if (isOpen && chainId && supportedChain(token, chainId!)) {
+        if (isOpen && chainId && supportedChain(chainId!, token)) {
             getRootBalance()
         }
     }, [token, tokenAddress, library, account, chainId, isOpen])

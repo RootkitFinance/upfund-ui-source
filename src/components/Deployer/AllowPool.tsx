@@ -4,25 +4,26 @@ import { TransferGateService } from "../../services/TransferGateService"
 import ActionModal from "../ActionModal"
 import { isAddress } from "../../utils";
 import AddressInput from "../AddressInput"
+import { Token } from "../../constants";
 
 const AllowPool = ({ isOpen, onDismiss } : { isOpen: boolean, onDismiss: () => void }) => {
     const { account, library } = useWeb3React()
-    const [token, setToken] = useState<string>("")
+    const [tokenAddress, setTokenAddress] = useState<string>("")
 
     const allowPool = async () => {        
-        if (isAddress(token)) {
-            return await new TransferGateService(library, account!).allowPool(token)
+        if (isAddress(tokenAddress)) {
+            return await new TransferGateService(Token.ROOT, library, account!).allowPool(tokenAddress)
         }
     }
 
     const close = () => {
-        setToken("")
+        setTokenAddress("")
         onDismiss()
     }
 
     return (
         <ActionModal isOpen={isOpen} onDismiss={close} action={allowPool} title={"Allow Pool"}>
-           <AddressInput value={token} label={"Token Address"} onChange={setToken} />
+           <AddressInput value={tokenAddress} label={"Token Address"} onChange={setTokenAddress} />
         </ActionModal>
     )
 }

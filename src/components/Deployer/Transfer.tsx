@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useWeb3React } from "@web3-react/core"
 import ActionModal from "../ActionModal"
-import { isAddress } from "../../utils";
+import { isAddress, supportedChain } from "../../utils";
 import AddressInput from "../AddressInput"
 import CurrencyInput from "../CurrencyInput";
 import { getTokenByAddress } from "../../constants";
@@ -9,7 +9,7 @@ import { TokenService } from "../../services/TokenService";
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 
 const Transfer = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, isOpen: boolean, onDismiss: () => void }) => {
-    const { account, library } = useWeb3React()
+    const { account, library, chainId } = useWeb3React()
     const [value, setValue] = useState<string>("")
     const [balance, setBalance] = useState<string>("")
     const [recipient, setRecipient] = useState<string>("")
@@ -17,11 +17,12 @@ const Transfer = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, 
     const { token } = useContext(ControlCenterContext);
 
     useEffect(() => {
-        const getWethBalance = async () => setBalance(await tokenService.getBalance(account!, tokenAddress))
-        const tokenService = new TokenService(token, library, account!)
-
-        getWethBalance()
-    })
+        const getBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(account!, tokenAddress))
+       
+        if (isOpen && chainId && supportedChain(chainId!, token)) {
+            getBalance()
+        }
+    }, [token, tokenAddress, library, account, chainId, isOpen])
 
     const transfer = async () => {     
         const amount = parseFloat(value)   

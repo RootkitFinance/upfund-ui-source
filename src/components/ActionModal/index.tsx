@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { TransactionResponse } from "@ethersproject/providers";
 import { ButtonPrimary, ButtonSecondary } from "../Button"
@@ -60,6 +60,10 @@ const ActionModal = (
     const [error, setError] = useState("")
     const [transactionHash, setTransactionHash] = useState("")
     const { addTransaction } = useContext(TransactionsContext)
+
+    useEffect(() =>{
+        setError("")
+    }, [isOpen])
 
     const onOk = async () => {
        

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { useWeb3React } from "@web3-react/core"
 import { Erc31337Service } from "../../services/Erc31337Service"
 import ActionModal from "../ActionModal"
@@ -6,7 +6,8 @@ import { isAddress } from "../../utils";
 import AddressInput from "../AddressInput"
 import Toggle from "../Toggle";
 import styled from "styled-components";
-import { KETH_ADDRESS } from "../../constants";
+import { ControlCenterContext } from "../../contexts/ControlCenterContext";
+import { eliteAddresses } from "../../constants";
 
 const ToggleWrapper = styled.div`
     display: grid;
@@ -25,10 +26,11 @@ const SetSweeper = ({ isOpen, onDismiss } : { isOpen: boolean, onDismiss: () => 
     const { account, library } = useWeb3React()
     const [address, setAddress] = useState<string>("")
     const [allow, setAllow] = useState<boolean>(true)
-
+    const { token } = useContext(ControlCenterContext);
+    
     const setSweeper = async () => {        
         if (address && isAddress(address)) {
-            return await new Erc31337Service(library, account!).setSweeper(KETH_ADDRESS, address, allow)  
+            return await new Erc31337Service(library, account!).setSweeper(eliteAddresses.get(token)!, address, allow)  
         }
     }
 

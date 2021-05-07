@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { useWeb3React } from "@web3-react/core"
 import { TransferGateService } from "../../services/TransferGateService"
 import ActionModal from "../ActionModal"
@@ -6,6 +6,7 @@ import { isAddress } from "../../utils";
 import AddressInput from "../AddressInput"
 import Toggle from "../Toggle";
 import styled from "styled-components";
+import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 
 const ToggleWrapper = styled.div`
     display: grid;
@@ -24,10 +25,11 @@ const SetFreeParticipant = ({ isOpen, onDismiss } : { isOpen: boolean, onDismiss
     const { account, library } = useWeb3React()
     const [address, setAddress] = useState<string>("")
     const [free, setFree] = useState<boolean>(true)
+    const { token } = useContext(ControlCenterContext);
 
-    const setFreeParticipant = async () => {        
-        if (address && isAddress(address)) {           
-            return await new TransferGateService(library, account!).setFreeParticipant(address, free)
+    const setFreeParticipant = async () => {
+        if (address && isAddress(address)) {
+            return await new TransferGateService(token, library, account!).setFreeParticipant(address, free);
         }
     }
 

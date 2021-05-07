@@ -90,6 +90,12 @@ export const calculatorAddresses = new Map([
   [Token.upBNB, "0xc129d4BaEF42C4DCF03D48e9A484F72E33f4f376"],
 ])
 
+export const transfetGateAddresses = new Map([
+  [Token.ROOT, "0x12b0CC3C0DC7E4d525db490f24Dd4B3526820C50"],
+  [Token.upTether, "0x5Db891E2f256E690aeD79bb2Fe94675bEf1435c5"],
+  [Token.upBNB, "0xDDDe5C5d1285428922bb2f8524dD1C117A3Bf313"],
+])
+
 export const VAULT_ADDRESS = "0xaa360Bd89Ac14533940114cf7205DdF5e0CA7fa6"
 export const IGNORE_ADDRESS = "0x4D605Ded7e5a9B22ecB8B90576Cd9b405190C1EB"
 export const BUY_BACK_ADDRESS = "0xc27c10ABf2fD6B39Cda4c5478BB2BF1E12919c99"

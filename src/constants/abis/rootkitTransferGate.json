@@ -2,13 +2,13 @@
     {
       "inputs": [
         {
-          "internalType": "contract ILiquidityLockedERC20",
-          "name": "_rootedToken",
+          "internalType": "contract RootKit",
+          "name": "_rootKit",
           "type": "address"
         },
         {
-          "internalType": "contract IPancakeRouter02",
-          "name": "_pancakeRouter",
+          "internalType": "contract IUniswapV2Router02",
+          "name": "_uniswapV2Router",
           "type": "address"
         }
       ],
@@ -35,9 +35,92 @@
       "type": "event"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "addressStates",
+      "outputs": [
+        {
+          "internalType": "enum RootKitTransferGate.AddressState",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "allowPool",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "allowedPoolTokens",
+      "outputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "allowedPoolTokensCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "claimOwnership",
       "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "a",
+          "type": "address"
+        }
+      ],
+      "name": "detectState",
+      "outputs": [
+        {
+          "internalType": "enum RootKitTransferGate.AddressState",
+          "name": "state",
+          "type": "uint8"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -94,32 +177,6 @@
           "internalType": "bool",
           "name": "",
           "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "feeSplitter",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "feesRate",
-      "outputs": [
-        {
-          "internalType": "uint16",
-          "name": "",
-          "type": "uint16"
         }
       ],
       "stateMutability": "view",
@@ -203,19 +260,55 @@
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "burn",
           "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "destination",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct TransferGateTarget[]",
+          "name": "targets",
+          "type": "tuple[]"
         }
       ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "mainPool",
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "liquiditySupply",
       "outputs": [
         {
-          "internalType": "contract IPancakePair",
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "mustUpdate",
+      "outputs": [
+        {
+          "internalType": "address",
           "name": "",
           "type": "address"
         }
@@ -230,6 +323,39 @@
         {
           "internalType": "address",
           "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "parameters",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "dev",
+          "type": "address"
+        },
+        {
+          "internalType": "uint16",
+          "name": "stakeRate",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "burnRate",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "devRate",
+          "type": "uint16"
+        },
+        {
+          "internalType": "address",
+          "name": "stake",
           "type": "address"
         }
       ],
@@ -264,6 +390,83 @@
         }
       ],
       "name": "recoverTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "rootKitAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "minTokenAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "minRootKitAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        }
+      ],
+      "name": "safeAddLiquidity",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "rootKitUsed",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenUsed",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "liquidity",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "a",
+          "type": "address"
+        },
+        {
+          "internalType": "enum RootKitTransferGate.AddressState",
+          "name": "state",
+          "type": "uint8"
+        }
+      ],
+      "name": "setAddressState",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -308,32 +511,6 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_feeSplitter",
-          "type": "address"
-        }
-      ],
-      "name": "setFeeSplitter",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint16",
-          "name": "_feesRate",
-          "type": "uint16"
-        }
-      ],
-      "name": "setFees",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
           "name": "participant",
           "type": "address"
         },
@@ -369,12 +546,32 @@
     {
       "inputs": [
         {
-          "internalType": "contract IPancakePair",
-          "name": "_mainPool",
+          "internalType": "address",
+          "name": "_dev",
           "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_stake",
+          "type": "address"
+        },
+        {
+          "internalType": "uint16",
+          "name": "_stakeRate",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "_burnRate",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "_devRate",
+          "type": "uint16"
         }
       ],
-      "name": "setMainPool",
+      "name": "setParameters",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -393,6 +590,19 @@
         }
       ],
       "name": "setPoolTaxRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IUniswapV2Router02",
+          "name": "_uniswapV2Router",
+          "type": "address"
+        }
+      ],
+      "name": "setRouterAndFactory",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -432,6 +642,19 @@
       "inputs": [
         {
           "internalType": "address",
+          "name": "a",
+          "type": "address"
+        }
+      ],
+      "name": "throwAddressState",
+      "outputs": [],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
           "name": "newOwner",
           "type": "address"
         }
@@ -439,6 +662,32 @@
       "name": "transferOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "uniswapV2Factory",
+      "outputs": [
+        {
+          "internalType": "contract IUniswapV2Factory",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "uniswapV2Router",
+      "outputs": [
+        {
+          "internalType": "contract IUniswapV2Router02",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {

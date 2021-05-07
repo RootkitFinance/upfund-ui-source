@@ -1,14 +1,16 @@
-import React, { useState } from "react"
+import { useWeb3React } from "@web3-react/core"
+import React, { useContext, useState } from "react"
 import styled from "styled-components"
-import { KETH_ADDRESS, KETH_ROOT_POOL_ADDRESS, ROOT_ADDRESS, WETH_ADDRESS, WETH_ROOT_POOL_ADDRESS, WRAPPED_KETH_ROOT_LP_ADDRESS, WRAPPED_WETH_ROOT_LP_ADDRESS } from "../../constants"
-import { ButtonPrimary, ButtonPrimaryRed, ButtonPrimaryGreen } from "../Button"
+import { Token } from "../../constants"
+import { ControlCenterContext } from "../../contexts/ControlCenterContext"
+import { supportedChain } from "../../utils"
+import { ButtonPrimary } from "../Button"
 import AllowPool from "./AllowPool"
-import MoneyButton from "./MoneyButton"
-import SendTokens from "./SendToken"
 import SetDumpTax from "./SetDumpTax"
 import SetFeeController from "./SetFeeController"
+import SetFees from "./SetFees"
 import SetFreeParticipant from "./SetFreeParticipant"
-import SetSellStakeRateMultiplier from "./SetSellStakeRateMultiplier"
+import SetPoolTaxRate from "./SetPoolTaxRate"
 import SetSweeper from "./SetSweeper"
 import SetUnrestrictedController from "./SetUnrestrictedController"
 import SweepFloor from "./SweepFloor"
@@ -43,21 +45,19 @@ const SectionHeader = styled.div`
 `
 
 const Deployer = () => {
-    const [rootKethArbOpen, setRootKethArbOpen] = useState<boolean>(false)
-    const [kethRootArbOpen, setKethRootArbOpen] = useState<boolean>(false)
+    const { token, baseTicker, eliteTicker, rootedTicker, baseAddress, eliteAddress, rootedAddress, basePoolAddress, elitePoolAddress } = useContext(ControlCenterContext);
+    const { chainId } = useWeb3React()
     const [allowPoolOpen, setAllowPoolOpen] = useState<boolean>(false)
     const [unrestrictedControllerOpen, setUnrestrictedControllerOpen] = useState<boolean>(false)
     const [feeControllerOpen, setFeeControllerOpen] = useState<boolean>(false)
     const [freeParticipantOpen, setFreeParticipantOpen] = useState<boolean>(false)
-    const [sellStakeRateMultiplierOpen, setSellStakeRateMultiplier] = useState<boolean>(false)
+    const [poolTaxRateOpen, setPoolTaxRateOpen] = useState<boolean>(false)
+    const [feesOpen, setFeesOpen] = useState<boolean>(false)
     const [dumpTaxOpen, setDumpTaxOpen] = useState<boolean>(false)
-    const [sweepKethFloorOpen, setSweepKethFloorOpen] = useState<boolean>(false)
-    const [sweepKethLpFloorOpen, setSweepKethLpFloorOpen] = useState<boolean>(false)
-    const [sweepWethLpFloorOpen, setSweepWethLpFloorOpen] = useState<boolean>(false)
+    const [sweepFloorOpen, setSweepFloorOpen] = useState<boolean>(false)
     const [sweeperOpen, setSweeperOpen] = useState<boolean>(false)
     const [transferOpen, setTransferOpen] = useState<boolean>(false)
-    const [sendTokensOpen, setSendTokensOpen] = useState<boolean>(false)
-    const [transferTokenAddress, setTransferTokenAddress] = useState<string>(WETH_ADDRESS)
+    const [transferTokenAddress, setTransferTokenAddress] = useState<string>(baseAddress)
 
     const transfer = (address: string) =>
     {
@@ -67,67 +67,46 @@ const Deployer = () => {
 
     return (
         <Wrapper>
-            <MoneyButton isOpen={rootKethArbOpen} rootFirst={true} onDismiss={() => setRootKethArbOpen(false)} />
-            <MoneyButton isOpen={kethRootArbOpen} rootFirst={false} onDismiss={() => setKethRootArbOpen(false)} />
             <AllowPool isOpen={allowPoolOpen} onDismiss={() => setAllowPoolOpen(false)} />
-            <SetUnrestrictedController  isOpen={unrestrictedControllerOpen} onDismiss={() => setUnrestrictedControllerOpen(false)} />
-            <SetFeeController  isOpen={feeControllerOpen} onDismiss={() => setFeeControllerOpen(false)} />
+            <SetUnrestrictedController isOpen={unrestrictedControllerOpen} onDismiss={() => setUnrestrictedControllerOpen(false)} />
+            <SetFeeController isOpen={feeControllerOpen} onDismiss={() => setFeeControllerOpen(false)} />
             <SetFreeParticipant isOpen={freeParticipantOpen} onDismiss={() => setFreeParticipantOpen(false)} />
-            <SetSellStakeRateMultiplier isOpen={sellStakeRateMultiplierOpen} onDismiss={() => setSellStakeRateMultiplier(false)} />
+            <SetPoolTaxRate isOpen={poolTaxRateOpen} onDismiss={() => setPoolTaxRateOpen(false)} />
+            <SetFees isOpen={feesOpen} onDismiss={() => setFeesOpen(false)} />
             <SetDumpTax isOpen={dumpTaxOpen} onDismiss={() => setDumpTaxOpen(false)} />
-            <SweepFloor tokenAddress={KETH_ADDRESS} isOpen={sweepKethFloorOpen} onDismiss={() => setSweepKethFloorOpen(false)} />
-            <SweepFloor tokenAddress={WRAPPED_KETH_ROOT_LP_ADDRESS} isOpen={sweepKethLpFloorOpen} onDismiss={() => setSweepKethLpFloorOpen(false)} />
-            <SweepFloor tokenAddress={WRAPPED_WETH_ROOT_LP_ADDRESS} isOpen={sweepWethLpFloorOpen} onDismiss={() => setSweepWethLpFloorOpen(false)} />
-            <SetSweeper isOpen={sweeperOpen} onDismiss={() => setSweeperOpen(false)} />
-            <SendTokens isOpen={sendTokensOpen} onDismiss={() => setSendTokensOpen(false)} />
+            <SweepFloor tokenAddress={eliteAddress} isOpen={sweepFloorOpen} onDismiss={() => setSweepFloorOpen(false)} />
+            <SetSweeper isOpen={sweeperOpen} onDismiss={() => setSweeperOpen(false)} />            
             <Transfer tokenAddress={transferTokenAddress} isOpen={transferOpen} onDismiss={() => setTransferOpen(false)}/>
 
             <SectionWrapper>
                 <SectionHeader>Transfer gate</SectionHeader>
                 <SectionContent>
-                    <ButtonPrimary onClick={() => setAllowPoolOpen(true)}>Allow Pool</ButtonPrimary>
-                    
-                    <ButtonPrimary onClick={() => setUnrestrictedControllerOpen(true)}>Set Unrestricted Controller</ButtonPrimary>
-                    <ButtonPrimary onClick={() => setFeeControllerOpen(true)}>Set Fee Controller</ButtonPrimary>
-                    <ButtonPrimary onClick={() => setFreeParticipantOpen(true)}>Set Free Participant</ButtonPrimary>
-                    <ButtonPrimary onClick={() => setSellStakeRateMultiplier(true)}>Set Sell Rate Multiplier</ButtonPrimary>
-                    <ButtonPrimary onClick={() => setDumpTaxOpen(true)}>Set Dump Tax</ButtonPrimary>
+                    {token === Token.ROOT && <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setAllowPoolOpen(true)}>Allow Pool</ButtonPrimary>}                    
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setUnrestrictedControllerOpen(true)}>Set Unrestricted Controller</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setFeeControllerOpen(true)}>Set Fee Controller</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setFreeParticipantOpen(true)}>Set Free Participant</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setPoolTaxRateOpen(true)}>Set Pool Tax Rate</ButtonPrimary>
+                    {token !== Token.ROOT && <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setFeesOpen(true)}>Set Fees</ButtonPrimary>}
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setDumpTaxOpen(true)}>Set Dump Tax</ButtonPrimary>
                 </SectionContent>
             </SectionWrapper>
 
             <SectionWrapper>
-                <SectionHeader>KETH</SectionHeader>
+                <SectionHeader>Elite ({eliteTicker})</SectionHeader>
                 <SectionContent>
-                    <ButtonPrimary onClick={() => setSweepKethFloorOpen(true)}>Sweep KETH Floor</ButtonPrimary>
-                    <ButtonPrimary onClick={() => setSweeperOpen(true)}>Set Sweeper</ButtonPrimary>
-                    <ButtonPrimaryGreen disabled={true}>Deposit WETH</ButtonPrimaryGreen>
-                    <ButtonPrimaryRed disabled={true}>Withdraw</ButtonPrimaryRed>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setSweepFloorOpen(true)}>Sweep Floor</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setSweeperOpen(true)}>Set Sweeper</ButtonPrimary>
                 </SectionContent>
-            </SectionWrapper>
-
-            <SectionWrapper>
-                <SectionHeader>{"Wrapped LP"}</SectionHeader>
-                <SectionContent>
-                    <ButtonPrimary onClick={() => setSweepWethLpFloorOpen(true)}>Sweep WETH LP Floor</ButtonPrimary>
-                    <ButtonPrimary onClick={() => setSweepKethLpFloorOpen(true)}>Sweep KETH LP Floor</ButtonPrimary>
-                </SectionContent>               
-            </SectionWrapper>
-
-            <SectionWrapper>
-                <SectionHeader>Vault</SectionHeader>
-                <SectionContent>
-                    <ButtonPrimary onClick={() => setSendTokensOpen(true)}>Send Tokens</ButtonPrimary>
-                </SectionContent>                
             </SectionWrapper>
 
             <SectionWrapper>
                 <SectionHeader>Transfer</SectionHeader>
                 <SectionContent>
-                    <ButtonPrimary onClick={() => transfer(WETH_ADDRESS)}>WETH</ButtonPrimary>
-                    <ButtonPrimary onClick={() => transfer(KETH_ADDRESS)}>KETH</ButtonPrimary>
-                    <ButtonPrimary onClick={() => transfer(ROOT_ADDRESS)}>ROOT</ButtonPrimary>
-                    <ButtonPrimary onClick={() => transfer(WETH_ROOT_POOL_ADDRESS)}>WETH LP</ButtonPrimary>
-                    <ButtonPrimary onClick={() => transfer(KETH_ROOT_POOL_ADDRESS)}>KETH LP</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(baseAddress)}>{baseTicker}</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(eliteAddress)}>{eliteTicker}</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(rootedAddress)}>{rootedTicker}</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(basePoolAddress)}>{baseTicker} LP</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(elitePoolAddress)}>{eliteTicker} LP</ButtonPrimary>
                 </SectionContent>
             </SectionWrapper>
 
