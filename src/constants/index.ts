@@ -91,7 +91,7 @@ export const calculatorAddresses = new Map([
 ])
 
 export const transfetGateAddresses = new Map([
-  [Token.ROOT, "0x12b0CC3C0DC7E4d525db490f24Dd4B3526820C50"],
+  [Token.ROOT, "0x105E66f0bfD5b3b1E386D0dC6EC00F3342EF3fF6"],
   [Token.upTether, "0x5Db891E2f256E690aeD79bb2Fe94675bEf1435c5"],
   [Token.upBNB, "0xDDDe5C5d1285428922bb2f8524dD1C117A3Bf313"],
 ])
