@@ -79,7 +79,7 @@ export const elitePoolAddresses = new Map([
 ])
 
 export const liquidityControllerAddresses = new Map([
-  [Token.ROOT, "0xb42AAFf6505C829C7697cDB6e593B34fAFA8D629"],
+  [Token.ROOT, "0x424eE0bA90c1B07A7c8A1A38aE999a88ED2cA5D1"],
   [Token.upTether, "0xcBF6eBBF8EC2AB0c9F1CFd257faD6678b0526e16"],
   [Token.upBNB, "0x09761A4D96F5dB4dB6425FA3acB3b3D27cB8b0e9"],
 ])
