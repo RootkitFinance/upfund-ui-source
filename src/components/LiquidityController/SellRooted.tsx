@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { eliteAddresses, liquidityControllerAddresses, rootedAddresses } from "../../constants"
+import { getTokenByAddress, liquidityControllerAddresses, rootedAddresses } from "../../constants"
 import { LiquidityControllerService } from "../../services/LiquidityControllerService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
@@ -13,11 +13,11 @@ const SellRooted = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string
     const [value, setValue] = useState<string>("")
     const [balance, setBalance] = useState<string>("")
     const { token, rootedTicker } = useContext(ControlCenterContext);
+    const tokenSymbol = getTokenByAddress(tokenAddress)!.symbol
 
     useEffect(() => {
-        const getRootedBalance = async () => setBalance(await tokenService.getBalance(liquidityControllerAddresses.get(token)!, rootedAddresses.get(token)!))
-        const tokenService = new TokenService(token, library, account!)
-        if(isOpen && chainId && supportedChain(chainId!, token)) {
+        const getRootedBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(liquidityControllerAddresses.get(token)!, rootedAddresses.get(token)!))
+        if (isOpen && chainId && supportedChain(chainId!, token)) {
             getRootedBalance()
         }
     }, [token, library, account, chainId, isOpen])
@@ -35,7 +35,7 @@ const SellRooted = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string
     }
 
     return (
-        <ActionModal isOpen={isOpen} onDismiss={close} action={sellRooted} title={`Sell Rooted for ${tokenAddress === eliteAddresses.get(token)! ? "Elite" : "Base"}`}>
+        <ActionModal isOpen={isOpen} onDismiss={close} action={sellRooted} title={`Sell Rooted for ${tokenSymbol}`}>
             <CurrencyInput
                 value={value}
                 balance={balance}

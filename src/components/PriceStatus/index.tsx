@@ -5,6 +5,7 @@ import { PriceInfo } from '../../dtos/PriceInfo'
 import { useWeb3React } from '@web3-react/core';
 import { TokenService } from '../../services/TokenService';
 import { ControlCenterContext } from '../../contexts/ControlCenterContext';
+import { Token } from '../../constants';
 
 const Wrapper = styled.div`
     display: grid;
@@ -59,5 +60,6 @@ export default function PriceStatus()
     <Wrapper>
         <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.basePool} ${baseTicker}` : null}</div>
         <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.elitePool} ${eliteTicker}` : null}</div>
+        {token === Token.upTether && <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.fiatPool} FIAT` : null}</div>}
     </Wrapper>)
 }

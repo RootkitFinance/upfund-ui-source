@@ -12,7 +12,7 @@ import { RefreshCw } from 'react-feather'
 import { TokenBalanceInfo } from "../../dtos/TokenBalanceInfo";
 import { PoolInfo } from "../../dtos/PoolInfo";
 import { TokenInfo } from "../../dtos/TokenInfo";
-import { basePoolAddresses, getTokenByAddress, baseAddresses, eliteAddresses, elitePoolAddresses, calculatorAddresses } from "../../constants";
+import { basePoolAddresses, getTokenByAddress, baseAddresses, eliteAddresses, elitePoolAddresses, calculatorAddresses, Token, FIAT_POOL_ADDRESS, FIAT_ADDRESS } from "../../constants";
 import { CalculatorService } from "../../services/CalculatorService";
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 
@@ -300,6 +300,7 @@ const Balances = () => {
         {balances?.map(x => (<AddressBalances key={x.address} globalLoading={loading} info={x} valid={valid}/>)) }
         <PoolBalances poolToken={baseToken} poolAddress={basePoolAddress} valid={valid}/>
         <PoolBalances poolToken={eliteToken} poolAddress={elitePoolAddress} valid={valid}/> 
+        { token === Token.upTether && <PoolBalances poolToken={getTokenByAddress(FIAT_ADDRESS)!} poolAddress={FIAT_POOL_ADDRESS} valid={valid}/> }
         <TwoPoolCalculatorSubFloor valid={valid}/>  
     </Wrapper>)
 }

@@ -2,10 +2,10 @@ import { Contract } from '@ethersproject/contracts'
 import erc20Abi from '../constants/abis/erc20.json'
 import { Web3Provider } from '@ethersproject/providers'
 import { AddressBalanceInfo } from '../dtos/AddressBalanceInfo';
-import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, liquidityControllerAddresses} from '../constants';
+import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, liquidityControllerAddresses, FIAT_POOL_ADDRESS, FIAT_ADDRESS, FiatToken, FiatLpToken} from '../constants';
 import { TokenBalanceInfo } from '../dtos/TokenBalanceInfo';
 import BigNumber from 'bignumber.js';
-import { getDisplayBalance } from '../utils/formatBalance';
+import { getDisplayBalance, getFullDisplayBalance } from '../utils/formatBalance';
 import { TokenInfo } from '../dtos/TokenInfo';
 import { PoolInfo } from '../dtos/PoolInfo';
 import { parseEther } from '@ethersproject/units'
@@ -33,7 +33,9 @@ export class TokenService {
         this.addressToTokensMap = new Map<string, TokenInfo[]>()
         this.addressToTokensMap.set(eliteAddresses.get(token)!, [ this.baseToken ])
         this.addressToTokensMap.set(DEPLOYER_ADDRESS, [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ])          
-        this.addressToTokensMap.set(liquidityControllerAddresses.get(token)!, [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ])
+        this.addressToTokensMap.set(liquidityControllerAddresses.get(token)!, token === Token.upTether 
+        ? [ this.baseToken, this.eliteToken, FiatToken, this.rootedToken, this.basePoolToken, this.elitePoolToken, FiatLpToken ] 
+        : [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ])
 
         this.tokenToContractMap = new Map<string, Contract>()
         const signer = library.getSigner(account).connectUnchecked();
@@ -42,13 +44,15 @@ export class TokenService {
         this.tokenToContractMap.set(this.rootedToken.address, new Contract(this.rootedToken.address, erc20Abi, signer))
         this.tokenToContractMap.set(this.basePoolToken.address, new Contract(this.basePoolToken.address, erc20Abi, signer))
         this.tokenToContractMap.set(this.elitePoolToken.address, new Contract(this.elitePoolToken.address, erc20Abi, signer))
+        this.tokenToContractMap.set(FIAT_ADDRESS, new Contract(FIAT_ADDRESS, erc20Abi, signer))
+        this.tokenToContractMap.set(FIAT_POOL_ADDRESS, new Contract(FIAT_POOL_ADDRESS, erc20Abi, signer))
     }
 
     public async getBalance(account: string, tokenAddress: string) {
        
         const balance = await this.tokenToContractMap.get(tokenAddress)!.balanceOf(account)
         const token = getTokenByAddress(tokenAddress)!;
-        return  getDisplayBalance(new BigNumber(balance.toString()), token.decimals)
+        return getFullDisplayBalance(new BigNumber(balance.toString()), token.decimals)
     }
 
     public getEmptyBalances() {
@@ -101,7 +105,7 @@ export class TokenService {
         const tokenBalance = new BigNumber((await tokenContract.balanceOf(poolAddress)).toString())
         const token = getTokenByAddress(tokenAddress)!;
         let rootPrice = tokenBalance.dividedBy(rootBalance)
-        if(this.token === Token.upTether)
+        if (this.token === Token.upTether && tokenAddress != FIAT_ADDRESS)
         {
             rootPrice = rootPrice.multipliedBy(new BigNumber(10).pow(12))
         }
@@ -124,6 +128,7 @@ export class TokenService {
     public async getPrices() {
         const basePoolInfo =  await this.getBasePoolInfo();
         const elitePoolInfo =  await this.getElitePoolInfo();
-        return new PriceInfo(basePoolInfo.rootPrice, elitePoolInfo.rootPrice)
+        const rootedPriceInFiatPool = this.token === Token.upTether ? (await this.getPoolInfo(FIAT_POOL_ADDRESS, FIAT_ADDRESS)).rootPrice : ""
+        return new PriceInfo(basePoolInfo.rootPrice, elitePoolInfo.rootPrice, rootedPriceInFiatPool)
     }
 }

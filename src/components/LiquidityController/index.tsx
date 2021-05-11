@@ -4,7 +4,7 @@ import { ButtonPrimary, ButtonPrimaryRed, ButtonPrimaryGreen } from "../Button"
 import UnwrapElite from "./UnwrapElite"
 import ZapEliteToBase from "./ZapEliteToBase"
 import AddLiquidity from "./AddLiquidity"
-import { Token } from "../../constants"
+import { FIAT_ADDRESS, Token } from "../../constants"
 import RemoveLiquidity from "./RemoveLiquidity"
 import BuyRoot from "./BuyRoot"
 import SellRoot from "./SellRooted"
@@ -65,6 +65,8 @@ const LiquidityController = () => {
   const [removeBaseLiquidityOpen, setRemoveBaseLiquidityOpen] = useState<boolean>(false)
   const [buyRootWithBaseOpen, setBuyRootWithBaseOpen] = useState<boolean>(false)
   const [sellRootForBaseOpen, setSellRootForBaseOpen] = useState<boolean>(false)
+  const [buyRootWithFiatOpen, setBuyRootWithFiatOpen] = useState<boolean>(false)
+  const [sellRootForFiatOpen, setSellRootForFiatOpen] = useState<boolean>(false)
 
   const [calibrateOpen, setCalibrateOpen] = useState<boolean>(false)
   const [sweepFloorOpen, setSweepFloorOpen] = useState<boolean>(false)
@@ -91,13 +93,14 @@ const LiquidityController = () => {
       <ZapBaseToElite isOpen={zapBaseToEliteOpen} onDismiss={() => setZapBaseToEliteOpen(false)} />
       <AddLiquidity tokenAddress={eliteAddress} isOpen={addEliteLiquidityOpen} onDismiss={() => setAddEliteLiquidityOpen(false)} />
       <RemoveLiquidity tokenAddress={eliteAddress} lpAddress={elitePoolAddress} isOpen={removeEliteLiquidityOpen} onDismiss={() => setRemoveEliteLiquidityOpen(false)} />
-      <BuyRoot elite={true} isOpen={buyRootWithEliteOpen} onDismiss={() => setBuyRootWithEliteOpen(false)} />
+      <BuyRoot tokenAddress={eliteAddress} isOpen={buyRootWithEliteOpen} onDismiss={() => setBuyRootWithEliteOpen(false)} />
       <SellRoot tokenAddress={eliteAddress} isOpen={sellRootForEliteOpen} onDismiss={() => setSellRootForEliteOpen(false)} />
       <AddLiquidity tokenAddress={baseAddress} isOpen={addBaseLiquidityOpen} onDismiss={() => setAddBaseLiquidityOpen(false)} />
       <RemoveLiquidity tokenAddress={baseAddress} lpAddress={basePoolAddress} isOpen={removeBaseLiquidityOpen} onDismiss={() => setRemoveBaseLiquidityOpen(false)} />
-      <BuyRoot elite={false} isOpen={buyRootWithBaseOpen} onDismiss={() => setBuyRootWithBaseOpen(false)} />
+      <BuyRoot tokenAddress={baseAddress} isOpen={buyRootWithBaseOpen} onDismiss={() => setBuyRootWithBaseOpen(false)} />
       <SellRoot tokenAddress={baseAddress} isOpen={sellRootForBaseOpen} onDismiss={() => setSellRootForBaseOpen(false)} />
-
+      <BuyRoot tokenAddress={FIAT_ADDRESS} isOpen={buyRootWithFiatOpen} onDismiss={() => setBuyRootWithFiatOpen(false)} />
+      <SellRoot tokenAddress={FIAT_ADDRESS} isOpen={sellRootForFiatOpen} onDismiss={() => setSellRootForFiatOpen(false)} />
    
       <Calibrate isOpen={calibrateOpen} onDismiss={() => setCalibrateOpen(false)}/>
       <SweepFloor isOpen={sweepFloorOpen} onDismiss={() => setSweepFloorOpen(false)}/>
@@ -112,10 +115,8 @@ const LiquidityController = () => {
 
       <SectionWrapper>
         <SectionContent>
-          {token === Token.ROOT && <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setCalibrateOpen(true)}>Calibrate</ButtonPrimary>}
           <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setSweepFloorOpen(true)}>Sweep Floor</ButtonPrimary>
-          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setLiquidityControllerOpen(true)}>Set Liquidity Controller</ButtonPrimary>
-         
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setLiquidityControllerOpen(true)}>Set Liquidity Controller</ButtonPrimary>         
         </SectionContent>
       </SectionWrapper>
       <SectionWrapper>
@@ -124,13 +125,13 @@ const LiquidityController = () => {
         <SectionContent>
           <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setRemoveBuyAndTaxEliteOpen(true)}>Remove, Buy and Tax Elite</ButtonPrimary>
           <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setBuyAndTaxEliteOpen(true)}>Buy and Tax Elite</ButtonPrimary>
-          <ButtonPrimary disabled={!supportedChain(chainId!, token)}  onClick={() => setBalancePriceEliteOpen(true)}>Balance Price Elite</ButtonPrimary>
-          <ButtonPrimary disabled={!supportedChain(chainId!, token)}  onClick={() => setUnwrapEliteOpen(true)}>Unwrap Elite</ButtonPrimary>
-          <ButtonPrimary disabled={!supportedChain(chainId!, token)}  onClick={() => setZapEliteToBaseOpen(true)}>Zap Elite to Base</ButtonPrimary>
-          <ButtonPrimaryGreen disabled={!supportedChain(chainId!, token)}  onClick={() => setAddEliteLiquidityOpen(true)}>Add Elite Liquidity</ButtonPrimaryGreen>
-          <ButtonPrimaryRed disabled={!supportedChain(chainId!, token)}  onClick={() => setRemoveEliteLiquidityOpen(true)}>Remove Elite Liquidity</ButtonPrimaryRed>
-          <ButtonPrimaryGreen disabled={!supportedChain(chainId!, token)}  onClick={() => setBuyRootWithEliteOpen(true)}>Buy Rooted with Elite</ButtonPrimaryGreen>
-          <ButtonPrimaryRed disabled={!supportedChain(chainId!, token)}  onClick={() => setSellRootForEliteOpen(true)}>Sell Rooted for Elite</ButtonPrimaryRed>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setBalancePriceEliteOpen(true)}>Balance Price Elite</ButtonPrimary>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setUnwrapEliteOpen(true)}>Unwrap Elite</ButtonPrimary>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setZapEliteToBaseOpen(true)}>Zap Elite to Base</ButtonPrimary>
+          <ButtonPrimaryGreen disabled={!supportedChain(chainId!, token)} onClick={() => setAddEliteLiquidityOpen(true)}>Add Elite Liquidity</ButtonPrimaryGreen>
+          <ButtonPrimaryRed disabled={!supportedChain(chainId!, token)} onClick={() => setRemoveEliteLiquidityOpen(true)}>Remove Elite Liquidity</ButtonPrimaryRed>
+          <ButtonPrimaryGreen disabled={!supportedChain(chainId!, token)} onClick={() => setBuyRootWithEliteOpen(true)}>Buy Rooted with Elite</ButtonPrimaryGreen>
+          <ButtonPrimaryRed disabled={!supportedChain(chainId!, token)} onClick={() => setSellRootForEliteOpen(true)}>Sell Rooted for Elite</ButtonPrimaryRed>
         </SectionContent>
       </SectionWrapper>
 
@@ -149,14 +150,24 @@ const LiquidityController = () => {
         </SectionContent>
       </SectionWrapper>
 
+      {token === Token.upTether &&
+        <SectionWrapper>
+          <SectionHeader>Fiat</SectionHeader>
+          <SectionContent>
+            <ButtonPrimaryGreen disabled={!supportedChain(chainId!, token)} onClick={() => setBuyRootWithFiatOpen(true)}>Buy Rooted with Fiat</ButtonPrimaryGreen>
+            <ButtonPrimaryRed disabled={!supportedChain(chainId!, token)} onClick={() => setSellRootForFiatOpen(true)}>Sell Rooted for Fiat</ButtonPrimaryRed>
+          </SectionContent>
+        </SectionWrapper>
+      }    
+
       <SectionWrapper>
         <SectionHeader>Recover</SectionHeader>
         <SectionContent>
-          <ButtonPrimary disabled={!supportedChain(chainId!, token)}  onClick={() => recoverTokens(baseAddress)}>{baseTicker}</ButtonPrimary>
-          <ButtonPrimary disabled={!supportedChain(chainId!, token)}  onClick={() => recoverTokens(eliteAddress)}>{eliteTicker}</ButtonPrimary>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => recoverTokens(baseAddress)}>{baseTicker}</ButtonPrimary>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => recoverTokens(eliteAddress)}>{eliteTicker}</ButtonPrimary>
           <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => recoverTokens(rootedAddress)}>{rootedTicker}</ButtonPrimary>
-          <ButtonPrimary disabled={!supportedChain(chainId!, token)}  onClick={() => recoverTokens(basePoolAddress)}>{baseTicker} LP</ButtonPrimary>
-          <ButtonPrimary disabled={!supportedChain(chainId!, token)}  onClick={() => recoverTokens(elitePoolAddress)}>{eliteTicker} LP</ButtonPrimary>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => recoverTokens(basePoolAddress)}>{baseTicker} LP</ButtonPrimary>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => recoverTokens(elitePoolAddress)}>{eliteTicker} LP</ButtonPrimary>
         </SectionContent>
       </SectionWrapper>
     </Wrapper>)

@@ -85,7 +85,7 @@ export const liquidityControllerAddresses = new Map([
 ])
 
 export const calculatorAddresses = new Map([
-  [Token.ROOT, "0xD4ed41a41bD5114341Eb2Dd066BD7A927B98DC14"],
+  [Token.ROOT, "0xA12C55637E642C0e79C5923125cd7eeb8be3a53F"],
   [Token.upTether, "0xB0cC4A9Fe546ad78ee0E080Bf5c4E15112176222"],
   [Token.upBNB, "0xc129d4BaEF42C4DCF03D48e9A484F72E33f4f376"],
 ])
@@ -101,6 +101,9 @@ export const rootedTokenInBasePool = new Map([
   [Token.upTether, 0],
   [Token.upBNB, 0],
 ])
+
+export const FIAT_ADDRESS = "0x29DCCf7595929a60c79885A5e2CcD77Af5eb5042"
+export const FIAT_POOL_ADDRESS = "0x961a57b75f5b42840c17fc9d1d5493405285cbed"
 
 export const VAULT_ADDRESS = "0xaa360Bd89Ac14533940114cf7205DdF5e0CA7fa6"
 export const IGNORE_ADDRESS = "0x4D605Ded7e5a9B22ecB8B90576Cd9b405190C1EB"
@@ -188,13 +191,13 @@ export const KethRootLpToken = new TokenInfo("KETH LP", KETH_ROOT_POOL_ADDRESS);
 export const WrappedWethRootLpToken = new TokenInfo("Wrapped WETH LP", WRAPPED_WETH_ROOT_LP_ADDRESS);
 export const WrappedKethRootLpToken = new TokenInfo("Wrapped KETH LP", WRAPPED_KETH_ROOT_LP_ADDRESS);
 
-
 export const TetherToken = new TokenInfo("USDT", baseAddresses.get(Token.upTether)!, 6);
 export const ETetherToken = new TokenInfo("etTether", eliteAddresses.get(Token.upTether)!, 6);
 export const UpTetherToken = new TokenInfo("upUSDT", rootedAddresses.get(Token.upTether)!);
 export const TetherLpToken = new TokenInfo("USDT LP", basePoolAddresses.get(Token.upTether)!);
 export const ETetherLpToken = new TokenInfo("eUSDT LP", elitePoolAddresses.get(Token.upTether)!);
-
+export const FiatToken = new TokenInfo("FIAT", FIAT_ADDRESS);
+export const FiatLpToken = new TokenInfo("FIAT LP", FIAT_POOL_ADDRESS);
 
 export const BnbToken = new TokenInfo("BNB", baseAddresses.get(Token.upBNB)!);
 export const EBnbToken = new TokenInfo("eBNB", eliteAddresses.get(Token.upBNB)!);
@@ -218,6 +221,8 @@ export const getTokenByAddress = (address: string) => {
   if (address === UpTetherToken.address) return UpTetherToken
   if (address === TetherLpToken.address) return TetherLpToken
   if (address === ETetherLpToken.address) return ETetherLpToken
+  if (address === FiatToken.address) return FiatToken
+  if (address === FiatLpToken.address) return FiatLpToken
 
   if (address === BnbToken.address) return BnbToken
   if (address === EBnbToken.address) return EBnbToken
