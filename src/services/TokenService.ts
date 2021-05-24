@@ -57,7 +57,7 @@ export class TokenService {
 
     public getEmptyBalances() {
         const addressBalances: AddressBalanceInfo[] = []
-        addressBalances.push(new AddressBalanceInfo("Liquidity Controller", liquidityControllerAddresses.get(this.token)!, this.addressToTokensMap.get(liquidityControllerAddresses.get(this.token)!)!.map(x => new TokenBalanceInfo(x, "0"))))
+        addressBalances.push(new AddressBalanceInfo("Vault", liquidityControllerAddresses.get(this.token)!, this.addressToTokensMap.get(liquidityControllerAddresses.get(this.token)!)!.map(x => new TokenBalanceInfo(x, "0"))))
         addressBalances.push(new AddressBalanceInfo("Deployer", DEPLOYER_ADDRESS, this.addressToTokensMap.get(DEPLOYER_ADDRESS)!.map(x => new TokenBalanceInfo(x, "0")))) 
         return addressBalances
     }

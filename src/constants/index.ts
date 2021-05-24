@@ -63,37 +63,37 @@ export const eliteAddresses = new Map([
 export const rootedAddresses = new Map([
   [Token.ROOT, "0xcb5f72d37685c3d5ad0bb5f982443bc8fcdf570e"],
   [Token.upTether, "0x49D30E666E88c1a18F6cd9aDa5d138D0d3780858"],
-  [Token.upBNB, "0x9c3bbff333f4aeab60b3c060607b7c505ff30c82"],
+  [Token.upBNB, "0x1759254EB142bcF0175347D5A0f3c19235538a9A"],
 ])
 
 export const basePoolAddresses = new Map([
   [Token.ROOT, "0x01f8989c1e556f5c89c7d46786db98eeaae82c33"],
   [Token.upTether, "0x75651cDcceaC34204C27a74a9267F538F0a387E8"],
-  [Token.upBNB, "0xb7b3852904aB78cCF76459bb28F160589C530688"],
+  [Token.upBNB, "0x27d078b13C2239606783679895Ec3b164da24D90"],
 ])
 
 export const elitePoolAddresses = new Map([
   [Token.ROOT, "0x44ee37ba8c98493f2590811c197ddd474c911d46"],
   [Token.upTether, "0x13574cA3ec622b7E9E8fD29B5D0C8Dd6a6694d9a"],
-  [Token.upBNB, "0x624b117c68de2d2524fde8c5fb7497d4aabf4bf4"],
+  [Token.upBNB, "0x0C51ec4743C1ae6be3c193926BA04458A56e4437"],
 ])
 
 export const liquidityControllerAddresses = new Map([
   [Token.ROOT, "0x424eE0bA90c1B07A7c8A1A38aE999a88ED2cA5D1"],
   [Token.upTether, "0xcBF6eBBF8EC2AB0c9F1CFd257faD6678b0526e16"],
-  [Token.upBNB, "0x09761A4D96F5dB4dB6425FA3acB3b3D27cB8b0e9"],
+  [Token.upBNB, "0xd22F3E99F7e16566A104A47c9c15e97C6B4Ad122"],
 ])
 
 export const calculatorAddresses = new Map([
   [Token.ROOT, "0xA12C55637E642C0e79C5923125cd7eeb8be3a53F"],
   [Token.upTether, "0xB0cC4A9Fe546ad78ee0E080Bf5c4E15112176222"],
-  [Token.upBNB, "0xc129d4BaEF42C4DCF03D48e9A484F72E33f4f376"],
+  [Token.upBNB, "0x2Cf93f951C44980Fb1790524d4f1a32A5dC7dadC"],
 ])
 
 export const transfetGateAddresses = new Map([
   [Token.ROOT, "0x105E66f0bfD5b3b1E386D0dC6EC00F3342EF3fF6"],
   [Token.upTether, "0x5Db891E2f256E690aeD79bb2Fe94675bEf1435c5"],
-  [Token.upBNB, "0xDDDe5C5d1285428922bb2f8524dD1C117A3Bf313"],
+  [Token.upBNB, "0x41491742c5b9FcA5963Efde67Cfd8a9a2205CdFb"],
 ])
 
 export const rootedTokenInBasePool = new Map([
