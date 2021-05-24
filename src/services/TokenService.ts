@@ -117,7 +117,7 @@ export class TokenService {
             getDisplayBalance(tokenBalance, token.decimals), 
             getDisplayBalance(new BigNumber(rootBalance.toString())),
             getDisplayBalance(new BigNumber(lpBalance.toString())),
-            rootPrice.toFixed(4))
+            rootPrice.toFixed(6))
     }
 
     public async transfer(tokenAddress: string, recipient: string, amount: string) {

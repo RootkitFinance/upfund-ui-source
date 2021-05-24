@@ -65,7 +65,7 @@ export class TradeHistoryService {
             rootAmount = rootedTokenInBasePool.get(this.token)! === 0 ? netToken0.abs() : netToken1.abs()
         } else if (netToken1.isNegative()) {
             type = rootedTokenInBasePool.get(this.token)! === 0 ? "sell" : "buy";
-            rootAmount = rootedTokenInBasePool.get(this.token)! === 0 ? netToken1.abs() : netToken0.abs()
+            rootAmount = rootedTokenInBasePool.get(this.token)! === 0 ? netToken0.abs() : netToken1.abs()
         }
         return new TradeHistoryInfo(blockDate.toLocaleTimeString(), type, getDisplayBalance(rootAmount))
     }
