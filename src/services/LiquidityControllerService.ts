@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import liquidityControllerAbi from '../constants/abis/liquidityController.json'
+import liquidityControllerAbi from '../constants/abis/vault.json'
 import { Web3Provider } from '@ethersproject/providers'
 import { liquidityControllerAddresses, Token } from '../constants';
 import { parseEther } from '@ethersproject/units'
