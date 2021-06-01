@@ -5,11 +5,8 @@ import { TokenInfo } from "../dtos/TokenInfo"
 
 export const NETWORK_LABELS: { [chainId in number]?: string } = {
   1: "Ethereum",  
-  3: "Ropsten",
-  4: "Rinkeby",
-  5: "Görli",
-  42: "Kovan",
-  56: "Binance"
+  56: "Binance",
+  137: "Matic"
 }
 
 export enum Token {
@@ -26,7 +23,7 @@ export const baseDecimals = new Map([
 
 export const tokenChains = new Map([
   [Token.ROOT, 1],
-  [Token.upTether, 1],
+  [Token.upTether, 137],
   [Token.upBNB, 56],
 ])
 
@@ -38,7 +35,7 @@ export const baseTickers = new Map([
 
 export const eliteTickers = new Map([
   [Token.ROOT, "KETH"],
-  [Token.upTether, "etTether"],
+  [Token.upTether, "eUSDT"],
   [Token.upBNB, "eBNB"],
 ])
 
@@ -50,60 +47,56 @@ export const rootedTickers = new Map([
 
 export const baseAddresses = new Map([
   [Token.ROOT, "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
-  [Token.upTether, "0xdac17f958d2ee523a2206206994597c13d831ec7"],
+  [Token.upTether, "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"],
   [Token.upBNB, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"],
 ])
 
 export const eliteAddresses = new Map([
   [Token.ROOT, "0x93747501F46Ae40b8A4B8F1a1529696AE24ea04e"],
-  [Token.upTether, "0x68D21265f815090B8Ab47B615753bB707D8C8636"],
+  [Token.upTether, "0xbFDF833E65Bd8B27c84fbE55DD17F7648C532168"],
   [Token.upBNB, "0xb7db0850096aeaec1b615463202db441012c564f"],
 ])
 
 export const rootedAddresses = new Map([
   [Token.ROOT, "0xcb5f72d37685c3d5ad0bb5f982443bc8fcdf570e"],
-  [Token.upTether, "0x49D30E666E88c1a18F6cd9aDa5d138D0d3780858"],
+  [Token.upTether, "0xCb5f72d37685C3D5aD0bB5F982443BC8FcdF570E"],
   [Token.upBNB, "0x1759254EB142bcF0175347D5A0f3c19235538a9A"],
 ])
 
 export const basePoolAddresses = new Map([
   [Token.ROOT, "0x01f8989c1e556f5c89c7d46786db98eeaae82c33"],
-  [Token.upTether, "0x75651cDcceaC34204C27a74a9267F538F0a387E8"],
   [Token.upBNB, "0x27d078b13C2239606783679895Ec3b164da24D90"],
 ])
 
 export const elitePoolAddresses = new Map([
   [Token.ROOT, "0x44ee37ba8c98493f2590811c197ddd474c911d46"],
-  [Token.upTether, "0x13574cA3ec622b7E9E8fD29B5D0C8Dd6a6694d9a"],
+  [Token.upTether, "0x50db5be8c0c878e28fe231c647ef41b395463ffb"],
   [Token.upBNB, "0x0C51ec4743C1ae6be3c193926BA04458A56e4437"],
 ])
 
 export const liquidityControllerAddresses = new Map([
   [Token.ROOT, "0x424eE0bA90c1B07A7c8A1A38aE999a88ED2cA5D1"],
-  [Token.upTether, "0xcBF6eBBF8EC2AB0c9F1CFd257faD6678b0526e16"],
+  [Token.upTether, "0x4C66a6f06B8bC4243479121A4eF0061650e5D137"],
   [Token.upBNB, "0xd22F3E99F7e16566A104A47c9c15e97C6B4Ad122"],
 ])
 
 export const calculatorAddresses = new Map([
   [Token.ROOT, "0xA12C55637E642C0e79C5923125cd7eeb8be3a53F"],
-  [Token.upTether, "0xB0cC4A9Fe546ad78ee0E080Bf5c4E15112176222"],
+  [Token.upTether, "0xdc436261C356E136b1671442d0bD0Ae183a6d77D"],
   [Token.upBNB, "0x2Cf93f951C44980Fb1790524d4f1a32A5dC7dadC"],
 ])
 
 export const transfetGateAddresses = new Map([
   [Token.ROOT, "0x105E66f0bfD5b3b1E386D0dC6EC00F3342EF3fF6"],
-  [Token.upTether, "0x5Db891E2f256E690aeD79bb2Fe94675bEf1435c5"],
+  [Token.upTether, "0x621642243CC6bE2D18b451e2386c52d1e9f7eDF6"],
   [Token.upBNB, "0x41491742c5b9FcA5963Efde67Cfd8a9a2205CdFb"],
 ])
 
 export const rootedTokenInBasePool = new Map([
   [Token.ROOT, 1],
-  [Token.upTether, 0],
+  [Token.upTether, 1],
   [Token.upBNB, 0],
 ])
-
-export const FIAT_ADDRESS = "0x29DCCf7595929a60c79885A5e2CcD77Af5eb5042"
-export const FIAT_POOL_ADDRESS = "0x961a57b75f5b42840c17fc9d1d5493405285cbed"
 
 export const VAULT_ADDRESS = "0xaa360Bd89Ac14533940114cf7205DdF5e0CA7fa6"
 export const IGNORE_ADDRESS = "0x4D605Ded7e5a9B22ecB8B90576Cd9b405190C1EB"
@@ -192,12 +185,9 @@ export const WrappedWethRootLpToken = new TokenInfo("Wrapped WETH LP", WRAPPED_W
 export const WrappedKethRootLpToken = new TokenInfo("Wrapped KETH LP", WRAPPED_KETH_ROOT_LP_ADDRESS);
 
 export const TetherToken = new TokenInfo("USDT", baseAddresses.get(Token.upTether)!, 6);
-export const ETetherToken = new TokenInfo("etTether", eliteAddresses.get(Token.upTether)!, 6);
+export const ETetherToken = new TokenInfo("eUSDT", eliteAddresses.get(Token.upTether)!, 6);
 export const UpTetherToken = new TokenInfo("upUSDT", rootedAddresses.get(Token.upTether)!);
-export const TetherLpToken = new TokenInfo("USDT LP", basePoolAddresses.get(Token.upTether)!);
 export const ETetherLpToken = new TokenInfo("eUSDT LP", elitePoolAddresses.get(Token.upTether)!);
-export const FiatToken = new TokenInfo("FIAT", FIAT_ADDRESS);
-export const FiatLpToken = new TokenInfo("FIAT LP", FIAT_POOL_ADDRESS);
 
 export const BnbToken = new TokenInfo("BNB", baseAddresses.get(Token.upBNB)!);
 export const EBnbToken = new TokenInfo("eBNB", eliteAddresses.get(Token.upBNB)!);
@@ -219,11 +209,8 @@ export const getTokenByAddress = (address: string) => {
   if (address === TetherToken.address) return TetherToken
   if (address === ETetherToken.address) return ETetherToken
   if (address === UpTetherToken.address) return UpTetherToken
-  if (address === TetherLpToken.address) return TetherLpToken
   if (address === ETetherLpToken.address) return ETetherLpToken
-  if (address === FiatToken.address) return FiatToken
-  if (address === FiatLpToken.address) return FiatLpToken
-
+ 
   if (address === BnbToken.address) return BnbToken
   if (address === EBnbToken.address) return EBnbToken
   if (address === UpBnbToken.address) return UpBnbToken

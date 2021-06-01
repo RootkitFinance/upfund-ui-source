@@ -21,15 +21,15 @@ const ToggleLabel = styled.span`
     padding-left: 1em;
 `
 
-const SetLiquidityController = ({ isOpen, onDismiss } : { isOpen: boolean, onDismiss: () => void }) => {
+const SetSeniorVaultManager = ({ isOpen, onDismiss } : { isOpen: boolean, onDismiss: () => void }) => {
     const { account, library } = useWeb3React()
     const [address, setAddress] = useState<string>("")
-    const [isController, setIsController] = useState<boolean>(true)
+    const [isManager, setIsManager] = useState<boolean>(true)
     const { token } = useContext(ControlCenterContext);
 
     const setLiquidityController = async () => {        
         if (address && isAddress(address)) {
-            return await new LiquidityControllerService(token, library, account!).setLiquidityController(address, isController)
+            return await new LiquidityControllerService(token, library, account!).setLiquidityController(address, isManager)
         }
     }
 
@@ -39,14 +39,14 @@ const SetLiquidityController = ({ isOpen, onDismiss } : { isOpen: boolean, onDis
     }
 
     return (
-        <ActionModal isOpen={isOpen} onDismiss={close} action={setLiquidityController} title={"Set Liquidity Controller"}>
-           <AddressInput value={address} label={"Controller"} onChange={setAddress} />
+        <ActionModal isOpen={isOpen} onDismiss={close} action={setLiquidityController} title={"Set Senior Vault Manager"}>
+           <AddressInput value={address} label={"Manager"} onChange={setAddress} />
            <ToggleWrapper>
-               <ToggleLabel>Liquidity Controller</ToggleLabel>
-               <Toggle isActive={isController} toggle={() => setIsController(!isController)}/>
+               <ToggleLabel>Senior Vault Manager</ToggleLabel>
+               <Toggle isActive={isManager} toggle={() => setIsManager(!isManager)}/>
            </ToggleWrapper>          
         </ActionModal>
     )
 }
 
-export default SetLiquidityController
+export default SetSeniorVaultManager

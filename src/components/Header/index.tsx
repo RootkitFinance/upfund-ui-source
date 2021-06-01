@@ -139,7 +139,6 @@ export default function Header() {
   const { account, chainId } = useWeb3React<Web3Provider>();
   const { token } = useContext(ControlCenterContext);
   const suppotedChain = chainId && supportedChain(chainId!, token);
-
   return (
     <HeaderFrame>
       <HeaderRow>
@@ -156,10 +155,7 @@ export default function Header() {
         </StyledNavLink>
         <StyledNavLink  id={`stake-nav-link`} exact={true}  to={'/upbnb'}>
           upBNB
-        </StyledNavLink>
-        {/* <Option onClick={() => setToken(Token.ROOT)} active={token === Token.ROOT}>ROOT</Option>
-        <Option onClick={() => setToken(Token.upTether)} active={token === Token.upTether}>upTether</Option>
-        <Option onClick={() => setToken(Token.upBNB)} active={token === Token.upBNB}>upBNB </Option> */}
+        </StyledNavLink>        
       </LinksWrapper>
       <HeaderControls>
         {suppotedChain && <PriceStatus />}

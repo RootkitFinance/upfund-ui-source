@@ -4,7 +4,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { TradeHistoryInfo } from '../dtos/TradeHistoryInfo'
 import { getDisplayBalance } from '../utils/formatBalance'
-import { basePoolAddresses, rootedTokenInBasePool, Token } from '../constants'
+import { basePoolAddresses, elitePoolAddresses, rootedTokenInBasePool, Token } from '../constants'
 
 export class TradeHistoryService {
     contract: Contract
@@ -15,7 +15,7 @@ export class TradeHistoryService {
         this.token = token;
         this.library = library;
         const signer = library.getSigner(account).connectUnchecked()
-        this.contract = new Contract(basePoolAddresses.get(token)!, uniswapV2Pair, signer)
+        this.contract = new Contract(token === Token.upTether ? elitePoolAddresses.get(token)! : basePoolAddresses.get(token)!, uniswapV2Pair, signer)
     }
 
     public async onSwap(action: (trade: TradeHistoryInfo) => void) {
@@ -32,8 +32,9 @@ export class TradeHistoryService {
     }
 
     public async getTrades() {
-        const blockNumber = await this.library.getBlockNumber();
-        const eventFilter = this.contract.filters.Swap()       
+       
+        const blockNumber = await this.library.getBlockNumber();       
+        const eventFilter = this.contract.filters.Swap()         
         const transferEvents = await this.contract.queryFilter(eventFilter, blockNumber - 500);
         const trades = []
         for(var i = transferEvents.length - 1; i >= 0; i--)

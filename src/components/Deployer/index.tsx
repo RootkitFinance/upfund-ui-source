@@ -105,7 +105,7 @@ const Deployer = () => {
                     <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(baseAddress)}>{baseTicker}</ButtonPrimary>
                     <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(eliteAddress)}>{eliteTicker}</ButtonPrimary>
                     <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(rootedAddress)}>{rootedTicker}</ButtonPrimary>
-                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(basePoolAddress)}>{baseTicker} LP</ButtonPrimary>
+                    {token !== Token.upTether &&<ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(basePoolAddress)}>{baseTicker} LP</ButtonPrimary> }
                     <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(elitePoolAddress)}>{eliteTicker} LP</ButtonPrimary>
                 </SectionContent>
             </SectionWrapper>

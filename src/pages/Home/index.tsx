@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import Balances from "../../components/Balances"
-import LiquidityController from "../../components/LiquidityController"
+import Vault from "../../components/Vault"
 import Deployer from "../../components/Deployer"
 import TradeHistory from "../../components/TradeHistory"
 import { Token } from "../../constants"
@@ -11,14 +11,14 @@ import { ControlCenterContext } from "../../contexts/ControlCenterContext"
 
 const Wrapper = styled.div`
     display: grid;
-    grid-template-areas: "liquidity-controller trades balances" "deployer trades balances";
+    grid-template-areas: "vault trades balances" "deployer trades balances";
     grid-template-columns: 2.1fr 0.65fr 0.75fr;
     padding: 0 1em 1em 1em;
     grid-gap: 1em;
     width: 100%;
 
    ${({ theme }) => theme.mediaWidth.upToMedium`
-        grid-template-areas: "liquidity-controller" "deployer" "trades" "balances";
+        grid-template-areas: "vault" "deployer" "trades" "balances";
         grid-template-columns: auto;
    `};
 `
@@ -39,8 +39,8 @@ const SectionHeader = styled.div`
     text-transform: uppercase;
 `
 
-const LiquidityControllerSection = styled(Section)`
-    grid-area: liquidity-controller;
+const VaultSection = styled(Section)`
+    grid-area: vault;
 `
 
 const DeployerSection = styled(Section)`
@@ -77,32 +77,28 @@ export const Home = () => {
         }
 
         setToken(Token.ROOT);
-
     })
 
     return (
-        account && library && chainId
-            ?
-            (
-                <Wrapper>
-                    <LiquidityControllerSection>
-                        <SectionHeader>Liquidity Controller</SectionHeader>
-                         <LiquidityController />
-                    </LiquidityControllerSection>
-                    <DeployerSection>
-                        <SectionHeader>Deployer</SectionHeader>
-                        <Deployer/> 
-                    </DeployerSection>
-                    <TradeHistorySection>
-                        <SectionHeader>Trade History</SectionHeader>
-                        <TradeHistory />
-                    </TradeHistorySection>
-                    <BalancesSection>
-                        <SectionHeader>Balances</SectionHeader>
-                        <Balances />
-                    </BalancesSection>
-                </Wrapper>
-            )
-            : null
+        account && library && chainId ?
+        <Wrapper>
+            <VaultSection>
+                <SectionHeader>Vault</SectionHeader>
+                <Vault />
+            </VaultSection>
+            <DeployerSection>
+                <SectionHeader>Deployer</SectionHeader>
+                <Deployer />
+            </DeployerSection>
+            <TradeHistorySection>
+                <SectionHeader>Trade History</SectionHeader>
+                <TradeHistory />
+            </TradeHistorySection>
+            <BalancesSection>
+                <SectionHeader>Balances</SectionHeader>
+                <Balances />
+            </BalancesSection>
+        </Wrapper>
+        : null      
     )
 }

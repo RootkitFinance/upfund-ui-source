@@ -58,8 +58,7 @@ export default function PriceStatus()
 
     return (
     <Wrapper>
-        <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.basePool} ${baseTicker}` : null}</div>
+        {token !== Token.upTether && <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.basePool} ${baseTicker}` : null}</div> }
         <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.elitePool} ${eliteTicker}` : null}</div>
-        {token === Token.upTether && <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.fiatPool} FIAT` : null}</div>}
     </Wrapper>)
 }

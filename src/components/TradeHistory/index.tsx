@@ -45,12 +45,11 @@ const TradeHistory = () => {
 
         const getTrades = async () => {
             if (supportedChain(chainId!, token)) {
+                const tradeHistoryService = new TradeHistoryService(token, library, account!)
                 setTrades(await tradeHistoryService.getTrades())
                 tradeHistoryService.onSwap(addNewTrade)
             }           
-        }
-
-        const tradeHistoryService = new TradeHistoryService(token, library, account!)
+        }        
         getTrades()
 
     }, [account, library, chainId, token])

@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts'
 import erc20Abi from '../constants/abis/erc20.json'
 import { Web3Provider } from '@ethersproject/providers'
 import { AddressBalanceInfo } from '../dtos/AddressBalanceInfo';
-import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, liquidityControllerAddresses, FIAT_POOL_ADDRESS, FIAT_ADDRESS, FiatToken, FiatLpToken} from '../constants';
+import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, liquidityControllerAddresses} from '../constants';
 import { TokenBalanceInfo } from '../dtos/TokenBalanceInfo';
 import BigNumber from 'bignumber.js';
 import { getDisplayBalance, getFullDisplayBalance } from '../utils/formatBalance';
@@ -32,20 +32,25 @@ export class TokenService {
 
         this.addressToTokensMap = new Map<string, TokenInfo[]>()
         this.addressToTokensMap.set(eliteAddresses.get(token)!, [ this.baseToken ])
-        this.addressToTokensMap.set(DEPLOYER_ADDRESS, [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ])          
+        this.addressToTokensMap.set(DEPLOYER_ADDRESS, token === Token.upTether 
+            ? [ this.baseToken, this.eliteToken, this.rootedToken, this.elitePoolToken ] 
+            : [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ]);
+
         this.addressToTokensMap.set(liquidityControllerAddresses.get(token)!, token === Token.upTether 
-        ? [ this.baseToken, this.eliteToken, FiatToken, this.rootedToken, this.basePoolToken, this.elitePoolToken, FiatLpToken ] 
-        : [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ])
+            ? [ this.baseToken, this.eliteToken, this.rootedToken, this.elitePoolToken ] 
+            : [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ]);
 
         this.tokenToContractMap = new Map<string, Contract>()
         const signer = library.getSigner(account).connectUnchecked();
         this.tokenToContractMap.set(this.baseToken.address, new Contract(this.baseToken.address, erc20Abi, signer))
         this.tokenToContractMap.set(this.eliteToken.address, new Contract(this.eliteToken.address, erc20Abi, signer))
         this.tokenToContractMap.set(this.rootedToken.address, new Contract(this.rootedToken.address, erc20Abi, signer))
-        this.tokenToContractMap.set(this.basePoolToken.address, new Contract(this.basePoolToken.address, erc20Abi, signer))
+        
+        if (token !== Token.upTether) {
+            this.tokenToContractMap.set(this.basePoolToken.address, new Contract(this.basePoolToken.address, erc20Abi, signer))
+        }
+        
         this.tokenToContractMap.set(this.elitePoolToken.address, new Contract(this.elitePoolToken.address, erc20Abi, signer))
-        this.tokenToContractMap.set(FIAT_ADDRESS, new Contract(FIAT_ADDRESS, erc20Abi, signer))
-        this.tokenToContractMap.set(FIAT_POOL_ADDRESS, new Contract(FIAT_POOL_ADDRESS, erc20Abi, signer))
     }
 
     public async getBalance(account: string, tokenAddress: string) {
@@ -105,7 +110,7 @@ export class TokenService {
         const tokenBalance = new BigNumber((await tokenContract.balanceOf(poolAddress)).toString())
         const token = getTokenByAddress(tokenAddress)!;
         let rootPrice = tokenBalance.dividedBy(rootBalance)
-        if (this.token === Token.upTether && tokenAddress != FIAT_ADDRESS)
+        if (this.token === Token.upTether)
         {
             rootPrice = rootPrice.multipliedBy(new BigNumber(10).pow(12))
         }
@@ -125,10 +130,13 @@ export class TokenService {
         return await tokenContract.transfer(recipient, parseEther(amount))
     }
 
-    public async getPrices() {
-        const basePoolInfo =  await this.getBasePoolInfo();
+    public async getPrices() {       
         const elitePoolInfo =  await this.getElitePoolInfo();
-        const rootedPriceInFiatPool = this.token === Token.upTether ? (await this.getPoolInfo(FIAT_POOL_ADDRESS, FIAT_ADDRESS)).rootPrice : ""
-        return new PriceInfo(basePoolInfo.rootPrice, elitePoolInfo.rootPrice, rootedPriceInFiatPool)
+        if (this.token === Token.upTether)
+        {
+            return new PriceInfo(elitePoolInfo.rootPrice, elitePoolInfo.rootPrice)
+        }
+        const basePoolInfo =  await this.getBasePoolInfo();
+        return new PriceInfo(basePoolInfo.rootPrice, elitePoolInfo.rootPrice)
     }
 }

@@ -9,7 +9,11 @@ const NETWORK_URL = process.env.REACT_APP_NETWORK_URL!
 export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1')
 
 export const network = new NetworkConnector({
-    urls: { [NETWORK_CHAIN_ID]: NETWORK_URL }
+    urls: { 
+      [1]: NETWORK_URL,
+      [56]: 'https://bsc-dataseed.binance.org/',
+      [137]: 'https://rpc-mainnet.maticvigil.com/'
+    }
   })
 
 let networkLibrary: Web3Provider | undefined
@@ -18,7 +22,7 @@ export function getNetworkLibrary(): Web3Provider {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 56]
+  supportedChainIds: [1, 56, 137]
 })
 
 // mainnet only
@@ -33,7 +37,7 @@ export const walletconnect = new WalletConnectConnector({
 // mainnet only
 export const walletlink = new WalletLinkConnector({
     url: NETWORK_URL,
-    appName: 'Uniswap',
+    appName: 'upFund',
     appLogoUrl:
       'https://mpng.pngfly.com/20181202/bex/kisspng-emoji-domain-unicorn-pin-badges-sticker-unicorn-tumblr-emoji-unicorn-iphoneemoji-5c046729264a77.5671679315437924251569.jpg'
   })
