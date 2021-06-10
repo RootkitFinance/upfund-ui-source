@@ -102,10 +102,9 @@ export const feeSplitterAddresses = new Map([
   [Token.upBNB, "0x26d24c05798595395173C12b409E349ef888f222"],
 ])
 
-
 export const arbitrageAddresses = new Map([
-  [Token.ROOT, ""],
-  [Token.upBNB, ""],
+  [Token.ROOT, "0x74702a9a9436FD6D3Cee6efa977Cc5CA766260bf"],
+  [Token.upBNB, "0xA173a0A2c4BdC9dBaC569b8DDc4bB89A67a66Ee9"],
 ])
 
 export const routerAddresses = new Map([

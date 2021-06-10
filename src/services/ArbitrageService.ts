@@ -35,14 +35,17 @@ export class ArbitrageService {
         const baseBalanceInBasePool = toNumber(await this.baseContract.balanceOf(this.basePoolAddress));
         const rootedBalanceInBasePool = toNumber(await this.rootedContract.balanceOf(this.basePoolAddress));
         const priceInBasePool = baseBalanceInBasePool / rootedBalanceInBasePool;
+        console.log("priceInBasePool ", priceInBasePool);
 
         const eliteBalanceInElitePool = toNumber(await this.eliteContract.balanceOf(this.elitePoolAddress));
         const rootedBalanceInElitePool = toNumber(await this.rootedContract.balanceOf(this.elitePoolAddress));
         const priceInElitePool = eliteBalanceInElitePool / rootedBalanceInElitePool;
+        console.log("priceInElitePool ", priceInBasePool);
 
         const priceInBasePoolSmaller = priceInBasePool < priceInElitePool;
         const priceRatio = priceInBasePoolSmaller ? priceInBasePool / priceInElitePool : priceInElitePool / priceInBasePool;
-
+        console.log("priceRatio ", priceRatio);
+        
         if (priceRatio >= 0.95) {
             return new ArbitrageResultInfo("", ResultType.None);
         }
@@ -86,11 +89,22 @@ export class ArbitrageService {
         const amountOut = x1Valid ? x1 : x2;
         
         const amounts = await this.routerContract.getAmountsIn(parseEther(amountOut.toString()), path);
-        const amountIn = amounts[0].toString();
-        console.log(amountIn);
+        let amountIn = amounts[0].toString();
+       
 
-        try {
+        try {           
             const balanceBefore = await this.getBaseBalance();
+            const arbAmount = toNumber(amounts[0]);
+            console.log(arbAmount);
+
+            if (balanceBefore === 0) {
+                return new ArbitrageResultInfo("Arbitrage balance is zero", ResultType.Error);
+            }
+
+            if (balanceBefore < arbAmount) {
+                amountIn = parseEther(balanceBefore.toString());
+            }
+
             const txResponse = priceInBasePoolSmaller ?  await this.arbitrageContract.balancePriceBase(amountIn) : await this.arbitrageContract.balancePriceElite(amountIn);
             if (txResponse)
             {                 
@@ -101,7 +115,7 @@ export class ArbitrageService {
                     return new ArbitrageResultInfo(`Arbitrage performed with ${(balanceAfter - balanceBefore).toFixed(2)} ${this.baseTicker} profit`, ResultType.Success);
                 }
             }
-
+        
             return new ArbitrageResultInfo("Arbitrage failed", ResultType.Error);   
 
         }
