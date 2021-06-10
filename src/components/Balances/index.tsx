@@ -1,5 +1,5 @@
-import { useWeb3React } from "@web3-react/core";
 import React, { useContext, useEffect, useState } from "react";
+import { useWeb3React } from "@web3-react/core";
 import styled, { ThemeContext } from "styled-components"
 import { AddressBalanceInfo } from "../../dtos/AddressBalanceInfo";
 import { TokenService } from "../../services/TokenService";

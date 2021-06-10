@@ -63,6 +63,11 @@ export const rootedAddresses = new Map([
   [Token.upBNB, "0x1759254EB142bcF0175347D5A0f3c19235538a9A"],
 ])
 
+export const stakingAddresses = new Map([
+  [Token.upTether, "0xc328f44ecaCE72cdeBc3e8E86E6705604BE2d2e1"],
+  [Token.upBNB, "0x49Ba5c83F151F8f786CF2623243b66dC42492d41"],
+])
+
 export const basePoolAddresses = new Map([
   [Token.ROOT, "0x01f8989c1e556f5c89c7d46786db98eeaae82c33"],
   [Token.upBNB, "0x27d078b13C2239606783679895Ec3b164da24D90"],
@@ -92,6 +97,37 @@ export const transfetGateAddresses = new Map([
   [Token.upBNB, "0x41491742c5b9FcA5963Efde67Cfd8a9a2205CdFb"],
 ])
 
+export const feeSplitterAddresses = new Map([
+  [Token.upTether, "0x1df2099f6AbBf0b05C12a61835137D84F10DAA96"],
+  [Token.upBNB, "0x26d24c05798595395173C12b409E349ef888f222"],
+])
+
+
+export const arbitrageAddresses = new Map([
+  [Token.ROOT, ""],
+  [Token.upBNB, ""],
+])
+
+export const routerAddresses = new Map([
+  [Token.ROOT, "0x7a250d5630b4cf539739df2c5dacb4c659f2488d"],
+  [Token.upTether, "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"],
+  [Token.upBNB, "0x10ed43c718714eb63d5aa57b78b54704e256024e"],
+])
+
+export const factoryAddresses = new Map([
+  [Token.ROOT, "0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f"],
+  [Token.upTether, "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32"],
+  [Token.upBNB, "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"],
+])
+
+
+export const rootedRouterAddresses = new Map([
+  [Token.upTether, "0x04A2fAB8dD40EEE62A12ce8692853e291ddbF54A"]
+])
+
+
+
+
 export const rootedTokenInBasePool = new Map([
   [Token.ROOT, 1],
   [Token.upTether, 1],
@@ -102,6 +138,8 @@ export const VAULT_ADDRESS = "0xaa360Bd89Ac14533940114cf7205DdF5e0CA7fa6"
 export const IGNORE_ADDRESS = "0x4D605Ded7e5a9B22ecB8B90576Cd9b405190C1EB"
 export const BUY_BACK_ADDRESS = "0xc27c10ABf2fD6B39Cda4c5478BB2BF1E12919c99"
 export const DEPLOYER_ADDRESS = "0x804CC8D469483d202c69752ce0304F71ae14ABdf"
+export const ROOT_FEEDER_ADDRESS = "0xc27c10ABf2fD6B39Cda4c5478BB2BF1E12919c99"
+export const DEV_FEEDER_ADDRESS = "0x30d1db7f73C7f9819e0676F5052D3B2D45FF3Fe5"
 export const TWO_POOL_CALCULATOR_ADDRESS = "0xD4ed41a41bD5114341Eb2Dd066BD7A927B98DC14"
 export const MONEY_BUTTON_ADDRESS = "0x7803B983492EB76406BDbF222D77937198ABa03c"
 export const TRANSFER_GATE_ADDRESS = "0x12b0CC3C0DC7E4d525db490f24Dd4B3526820C50"

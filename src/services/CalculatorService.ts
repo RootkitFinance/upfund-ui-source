@@ -11,10 +11,10 @@ export class CalculatorService {
     private eliteAddress: string  
 
     constructor(library: Web3Provider, account: string, token: Token) {
-        const signer = library.getSigner(account).connectUnchecked()       
+        const signer = library.getSigner(account).connectUnchecked()
         this.contract = new Contract(calculatorAddresses.get(token)!, calculatorAbi, signer)
         this.baseAddress = baseAddresses.get(token)!;
-        this.eliteAddress = eliteAddresses.get(token)!;               
+        this.eliteAddress = eliteAddresses.get(token)!;
     }
 
     public async calculatorSubFloor()

@@ -52,10 +52,6 @@ export default function PriceStatus()
         return () => clearInterval(timer)    
     }, [library, account, chainId, token])
 
-    useEffect(() => {
-
-    })
-
     return (
     <Wrapper>
         {token !== Token.upTether && <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.basePool} ${baseTicker}` : null}</div> }
