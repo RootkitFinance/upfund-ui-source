@@ -9,18 +9,18 @@ import TradeHistory from "../../components/TradeHistory"
 import { Token } from "../../constants"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext"
 import Addresses from "../../components/Addresses"
-import Arbitrage from "../../components/Arbitrage"
+import Fees from "../../components/Fees"
 
 const Wrapper = styled.div`
     display: grid;
-    grid-template-areas: "vault trades addresses balances" "deployer trades arbitrage balances";
+    grid-template-areas: "vault trades addresses balances" "deployer trades fees balances";
     grid-template-columns: 1.6fr 0.65fr 0.5fr 0.75fr;
     padding: 0 1em 1em 1em;
     grid-gap: 1em;
     width: 100%;
 
    ${({ theme }) => theme.mediaWidth.upToMedium`
-        grid-template-areas: "vault" "deployer" "trades" "addresses" "arbitrage" "balances";
+        grid-template-areas: "vault" "deployer" "trades" "addresses" "fees" "balances";
         grid-template-columns: auto;
    `};
 `
@@ -61,8 +61,8 @@ const AddressesSection = styled(Section)`
     grid-area: addresses;
 `
 
-const ArbitrageSection = styled(Section)`
-    grid-area: arbitrage;
+const FeesSection = styled(Section)`
+    grid-area: fees;
 `
 
 export const Home = () => {
@@ -108,10 +108,10 @@ export const Home = () => {
                 <SectionHeader>Addresses</SectionHeader>
                 <Addresses />
             </AddressesSection>
-            <ArbitrageSection>
-                <SectionHeader>Arbitrage</SectionHeader>
-                <Arbitrage />             
-            </ArbitrageSection>
+            <FeesSection>
+                <SectionHeader>Fees</SectionHeader>
+                <Fees />             
+            </FeesSection>
             <BalancesSection>
                 <SectionHeader>Balances</SectionHeader>
                 <Balances />

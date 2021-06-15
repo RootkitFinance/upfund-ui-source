@@ -45,6 +45,11 @@ export const rootedTickers = new Map([
   [Token.upBNB, "upBNB"],
 ])
 
+export const stakingTickers = new Map([
+  [Token.upTether, "xUpUSDT"],
+  [Token.upBNB, "xUpBNB"],
+])
+
 export const baseAddresses = new Map([
   [Token.ROOT, "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
   [Token.upTether, "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"],
@@ -98,8 +103,8 @@ export const transfetGateAddresses = new Map([
 ])
 
 export const feeSplitterAddresses = new Map([
-  [Token.upTether, "0x1df2099f6AbBf0b05C12a61835137D84F10DAA96"],
-  [Token.upBNB, "0x26d24c05798595395173C12b409E349ef888f222"],
+  [Token.upTether, "0x89BF266B932a4419985E4c5FDf7b06555519f036"],
+  [Token.upBNB, "0x6C6383dD4934a1157E0dCe5EE0B4a090b5D53ad2"],
 ])
 
 export const arbitrageAddresses = new Map([
@@ -119,18 +124,20 @@ export const factoryAddresses = new Map([
   [Token.upBNB, "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"],
 ])
 
-
 export const rootedRouterAddresses = new Map([
   [Token.upTether, "0x04A2fAB8dD40EEE62A12ce8692853e291ddbF54A"]
 ])
-
-
-
 
 export const rootedTokenInBasePool = new Map([
   [Token.ROOT, 1],
   [Token.upTether, 1],
   [Token.upBNB, 0],
+])
+
+export const routerName = new Map([
+  [Token.ROOT, "Uniswap"],
+  [Token.upTether, "Quickswap"],
+  [Token.upBNB, "Panecakeswap"],
 ])
 
 export const VAULT_ADDRESS = "0xaa360Bd89Ac14533940114cf7205DdF5e0CA7fa6"

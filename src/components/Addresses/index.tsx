@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled, { ThemeContext } from "styled-components";
-import { baseAddresses, basePoolAddresses, calculatorAddresses, DEPLOYER_ADDRESS, DEV_FEEDER_ADDRESS, eliteAddresses, elitePoolAddresses, factoryAddresses, feeSplitterAddresses, liquidityControllerAddresses, rootedAddresses, rootedRouterAddresses, ROOT_FEEDER_ADDRESS, routerAddresses, stakingAddresses, Token, transfetGateAddresses } from "../../constants";
+import { baseAddresses, basePoolAddresses, baseTickers, calculatorAddresses, DEPLOYER_ADDRESS, eliteAddresses, elitePoolAddresses, eliteTickers, factoryAddresses, feeSplitterAddresses, liquidityControllerAddresses, rootedAddresses, rootedRouterAddresses, rootedTickers, ROOT_FEEDER_ADDRESS, routerAddresses, routerName, stakingAddresses, stakingTickers, Token, transfetGateAddresses } from "../../constants";
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { AddressInfo } from "../../dtos/AddressInfo";
 import { ExternalLink } from "../Link";
@@ -22,7 +22,7 @@ const Section = styled.div`
 
     :not(:last-child){
         border-bottom: 1px solid ${({ theme }) => theme.text5};  
-        padding-bottom: 1em;
+        padding-bottom: 0.75em;
       }
 `
 
@@ -64,29 +64,32 @@ const AddressSection = ({info}:{info: AddressInfo}) => {
 
 const Addresses = () => {
     const { token } = useContext(ControlCenterContext);
-    const [tokens, seTokens] = useState<AddressInfo[]>([]);
+    const [tokens, setTokens] = useState<AddressInfo[]>([]);
     const [pools, setPools] = useState<AddressInfo[]>([]);
     const [system, setSystem] = useState<AddressInfo[]>([]);
     const [swaps, setSwaps] = useState<AddressInfo[]>([]);
 
     useEffect(() => {
+        const baseTiker = baseTickers.get(token)!;
+        const eliteTiker = eliteTickers.get(token)!;
+        const rootedTiker = rootedTickers.get(token)!;
 
         const t: AddressInfo[] = [ 
-            new AddressInfo("Base", baseAddresses.get(token)!),
-            new AddressInfo("Elite", eliteAddresses.get(token)!),
-            new AddressInfo("Rooted", rootedAddresses.get(token)!)
+            new AddressInfo(baseTiker, baseAddresses.get(token)!),
+            new AddressInfo(eliteTiker, eliteAddresses.get(token)!),
+            new AddressInfo(rootedTiker, rootedAddresses.get(token)!)
         ];
     
-        if (token !== Token.upTether) {
-            new AddressInfo("xRooted", stakingAddresses.get(token)!)
+        if (token !== Token.ROOT) {
+            t.push(new AddressInfo(stakingTickers.get(token)!, stakingAddresses.get(token)!));
         }
-        seTokens(t);
+        setTokens(t);
 
         const p: AddressInfo[] = [];
         if (token !== Token.upTether ) {
-            p.push(new AddressInfo("Base pool", basePoolAddresses.get(token)!));
+            p.push(new AddressInfo(`${baseTiker} / ${rootedTiker} Pool`, basePoolAddresses.get(token)!));
         }
-        p.push(new AddressInfo("Elite pool", elitePoolAddresses.get(token)!));
+        p.push(new AddressInfo(`${eliteTiker} / ${rootedTiker} Pool`, elitePoolAddresses.get(token)!));
         setPools(p);
 
         const s: AddressInfo[] = [ 
@@ -106,16 +109,15 @@ const Addresses = () => {
         setSystem(s);
 
         setSwaps([
-            new AddressInfo("Swap Router", routerAddresses.get(token)!),
-            new AddressInfo("Swap Factory", factoryAddresses.get(token)!)
+            new AddressInfo(`${routerName.get(token)!} Router`, routerAddresses.get(token)!),
+            new AddressInfo(`${routerName.get(token)!} Factory`, factoryAddresses.get(token)!)
         ]);
         
     }, [token])    
 
     const deployers: AddressInfo[] = [ 
         new AddressInfo("Deployer", DEPLOYER_ADDRESS),
-        new AddressInfo("ROOT Feeder", ROOT_FEEDER_ADDRESS),
-        new AddressInfo("Dev Feeder", DEV_FEEDER_ADDRESS),
+        new AddressInfo("ROOT Feeder", ROOT_FEEDER_ADDRESS)
     ];
 
 

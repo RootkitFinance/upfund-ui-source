@@ -21,11 +21,14 @@ export function shortenAddress(address: string, chars = 4): string {
 
 const ETHERSCAN_PREFIXES: { [chainId in number]: string } = {
   1: 'etherscan.io',
-  3: 'ropsten.etherscan.io',
-  4: 'rinkeby.etherscan.io',
-  5: 'goerli.etherscan.io',
-  42: 'kovan.etherscan.io',
   56: 'bscscan.com',
+ 137: 'polygonscan.com',
+}
+
+const ETHERSCAN_LABELS: { [chainId in number]: string } = {
+  1: 'Etherscan',
+  56: 'Bscscan',
+ 137: 'Polygonscan',
 }
 
 export function getEtherscanLink(
@@ -52,7 +55,7 @@ export function getEtherscanLink(
   }
 }
 
-export const getEtherscanLabel = (chainId: number) => `View on ${ chainId === 56 ? 'Bscscan' : 'Etherscan' }`
+export const getEtherscanLabel = (chainId: number) => `View on ${ETHERSCAN_LABELS[chainId]}`
 
 export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string

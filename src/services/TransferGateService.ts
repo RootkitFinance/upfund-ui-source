@@ -2,15 +2,44 @@ import { Contract } from '@ethersproject/contracts'
 import rootkitTransferGateAbi from '../constants/abis/rootkitTransferGate.json'
 import transferGateAbi from '../constants/abis/transferGate.json'
 import { Web3Provider } from '@ethersproject/providers'
-import { Token, transfetGateAddresses } from '../constants';
+import { basePoolAddresses, elitePoolAddresses, Token, transfetGateAddresses } from '../constants';
 import { parseEther } from '@ethersproject/units'
 
 export class TransferGateService {
     private contract: Contract
+    private token: Token;
 
     constructor(token: Token, library: Web3Provider, account: string) {
-        const signer = library.getSigner(account).connectUnchecked()
-        this.contract = new Contract(transfetGateAddresses.get(token)!, token === Token.ROOT ? rootkitTransferGateAbi : transferGateAbi, signer)
+        const signer = library.getSigner(account).connectUnchecked();
+        this.contract = new Contract(transfetGateAddresses.get(token)!, token === Token.ROOT ? rootkitTransferGateAbi : transferGateAbi, signer);
+        this.token = token;
+    }
+
+    public async getBuyFees() {
+        if (this.token === Token.ROOT){
+            const params = await this.contract.parameters();
+            const totalTax = parseFloat(params.stakeRate.toString()) + parseFloat(params.burnRate.toString()) + parseFloat(params.devRate.toString());
+            return totalTax/100;
+        }
+        const rate = await this.contract.feesRate();
+        return parseFloat((rate).toString())/100;
+    }
+
+    public async getSellFees() {
+        const poolAddress = this.token === Token.upTether ? elitePoolAddresses.get(this.token)! : basePoolAddresses.get(this.token)!
+        const dumpTax = await this.contract.getDumpTax();
+        const poolTax = await this.contract.poolsTaxRates(poolAddress);
+        let totalTax = parseFloat((poolTax).toString()) + parseFloat((dumpTax).toString());
+
+        if (this.token !== Token.ROOT){
+            return totalTax/100;
+        }
+        
+        const params = await this.contract.parameters();
+        const burnRate = parseFloat(params.burnRate.toString());
+        const devAndStateRate = parseFloat(params.stakeRate.toString()) + parseFloat(params.devRate.toString());
+        totalTax = poolTax > burnRate ? totalTax + devAndStateRate : devAndStateRate + burnRate;
+        return totalTax/100;        
     }
 
     public async allowPool(token: string) {
