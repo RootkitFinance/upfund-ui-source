@@ -16,7 +16,6 @@ import RecoverTokens from "./RecoverTokens"
 import BalancePrice from "./BalancePrice"
 import SweepFloor from "./SweepFloor"
 import BuyAndTax from "./BuyAndTax"
-import Calibrate from "./Calibrate"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext"
 import { supportedChain } from "../../utils"
 import { useWeb3React } from "@web3-react/core"
@@ -66,7 +65,7 @@ const Vault = () => {
   const [buyRootWithBaseOpen, setBuyRootWithBaseOpen] = useState<boolean>(false)
   const [sellRootForBaseOpen, setSellRootForBaseOpen] = useState<boolean>(false)
 
-  const [calibrateOpen, setCalibrateOpen] = useState<boolean>(false)
+ 
   const [sweepFloorOpen, setSweepFloorOpen] = useState<boolean>(false)
   const [balancePriceBaseOpen, setBalancePriceBaseOpen] = useState<boolean>(false)
   const [balancePriceEliteOpen, setBalancePriceEliteOpen] = useState<boolean>(false)
@@ -98,7 +97,6 @@ const Vault = () => {
       <BuyRoot tokenAddress={baseAddress} isOpen={buyRootWithBaseOpen} onDismiss={() => setBuyRootWithBaseOpen(false)} />
       <SellRoot tokenAddress={baseAddress} isOpen={sellRootForBaseOpen} onDismiss={() => setSellRootForBaseOpen(false)} />
    
-      <Calibrate isOpen={calibrateOpen} onDismiss={() => setCalibrateOpen(false)}/>
       <SweepFloor isOpen={sweepFloorOpen} onDismiss={() => setSweepFloorOpen(false)}/>
       <SetInfinitePumper isOpen={liquidityControllerOpen} onDismiss={() => setLiquidityControllerOpen(false)} />
       <RemoveBuyAndTax tokenAddress={baseAddress} lpAddress={basePoolAddress} isOpen={removeBuyAndTaxBaseOpen} onDismiss={() => setRemoveBuyAndTaxBaseOpen(false)} />

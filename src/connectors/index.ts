@@ -12,7 +12,7 @@ export const network = new NetworkConnector({
     urls: { 
       [1]: NETWORK_URL,
       [56]: 'https://bsc-dataseed.binance.org/',
-      [137]: 'https://rpc-mainnet.maticvigil.com/'
+      [137]: 'https://polygon-rpc.com/'
     }
   })
 
