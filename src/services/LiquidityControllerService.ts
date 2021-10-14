@@ -3,8 +3,8 @@ import upBNBVaultAbi from '../constants/abis/upBnbVault.json'
 import rootVaultAbi from '../constants/abis/rootVault.json'
 import upTeatherVaultAbi from '../constants/abis/upTeatherVault.json'
 import { Web3Provider } from '@ethersproject/providers'
-import { liquidityControllerAddresses, Token } from '../constants';
-import { parseEther } from '@ethersproject/units'
+import { baseDecimals, liquidityControllerAddresses, Token } from '../constants';
+import { parseEther, parseUnits } from '@ethersproject/units'
 import { calculateGas } from '../utils';
 
 export class LiquidityControllerService {
@@ -18,7 +18,7 @@ export class LiquidityControllerService {
         this.contract = new Contract(liquidityControllerAddresses.get(token)!, abi, signer);        
     } 
 
-    public async setLiquidityController(controller: string, infinite: boolean) {
+    public async setLiquidityController(controller: string, infinite: boolean) {      
         if (this.token === Token.upTether) {
             return await this.contract.setSeniorVaultManager(controller, infinite);
         }
@@ -40,20 +40,20 @@ export class LiquidityControllerService {
     }
 
     public async removeBuyAndTax(lpAmount: string, tokenAddress: string, taxRate: string, duration: string) { 
-        if (this.token === Token.upTether) {
+        if (this.token === Token.upTether) {            
             const gas = await this.contract.estimateGas.removeBuyAndTax(parseEther(lpAmount).toString(), taxRate, duration)
             return await this.contract.removeBuyAndTax(parseEther(lpAmount).toString(), taxRate, duration, { gasLimit: calculateGas(gas.toNumber()) }) //parse decimals!!!!
         } 
         
         const gas = await this.contract.estimateGas.removeBuyAndTax(parseEther(lpAmount).toString(), tokenAddress, taxRate, duration)
-        return await this.contract.removeBuyAndTax(parseEther(lpAmount).toString(), tokenAddress, taxRate, duration, { gasLimit: calculateGas(gas.toNumber()) }) //parse decimals!!!!
-        
+        return await this.contract.removeBuyAndTax(parseEther(lpAmount).toString(), tokenAddress, taxRate, duration, { gasLimit: calculateGas(gas.toNumber()) }) //parse decimals!!!        
     }
 
     public async buyAndTax(tokenAddress: string, amountToSpend: string, taxRate: string, duration: string) {      
         if (this.token === Token.upTether) {
-            const gas = await this.contract.estimateGas.buyAndTax(parseEther(amountToSpend).toString(), taxRate, duration)
-            return await this.contract.buyAndTax(parseEther(amountToSpend).toString(), taxRate, duration, { gasLimit: calculateGas(gas.toNumber()) })
+            const amount = parseUnits(amountToSpend, baseDecimals.get(this.token)!);
+            const gas = await this.contract.estimateGas.buyAndTax(amount, taxRate, duration)
+            return await this.contract.buyAndTax(amount, taxRate, duration, { gasLimit: calculateGas(gas.toNumber()) })
         }  
         const gas = await this.contract.estimateGas.buyAndTax(tokenAddress, parseEther(amountToSpend).toString(), taxRate, duration)
         return await this.contract.buyAndTax(tokenAddress, parseEther(amountToSpend).toString(), taxRate, duration, { gasLimit: calculateGas(gas.toNumber()) })
@@ -75,19 +75,22 @@ export class LiquidityControllerService {
     }
 
     public async wrapToElite(baseAmount: string) {
-        const gas = await this.contract.estimateGas.wrapToElite(parseEther(baseAmount))
-        return await this.contract.wrapToElite(parseEther(baseAmount), { gasLimit: calculateGas(gas.toNumber()) })
+        const amount = parseUnits(baseAmount, baseDecimals.get(this.token)!);
+        const gas = await this.contract.estimateGas.wrapToElite(amount)
+        return await this.contract.wrapToElite(amount, { gasLimit: calculateGas(gas.toNumber()) })
     }
 
     public async unwrapElite(eliteAmount: string) {
-        const gas = await this.contract.estimateGas.unwrapElite(parseEther(eliteAmount))
-        return await this.contract.unwrapElite(parseEther(eliteAmount), { gasLimit: calculateGas(gas.toNumber()) })
+        const amount = parseUnits(eliteAmount, baseDecimals.get(this.token)!);
+        const gas = await this.contract.estimateGas.unwrapElite(amount)
+        return await this.contract.unwrapElite(amount, { gasLimit: calculateGas(gas.toNumber()) })
     }
 
     public async addLiquidity(tokenAddress: string, amountToAdd: string) {
         if (this.token === Token.upTether) {
-            const gas = await this.contract.estimateGas.addLiquidity(parseEther(amountToAdd))
-            return await this.contract.addLiquidity(parseEther(amountToAdd), { gasLimit: calculateGas(gas.toNumber()) })
+            const amount = parseUnits(amountToAdd, baseDecimals.get(this.token)!);
+            const gas = await this.contract.estimateGas.addLiquidity(amount);
+            return await this.contract.addLiquidity(amount, { gasLimit: calculateGas(gas.toNumber()) })
         }
         const gas = await this.contract.estimateGas.addLiquidity(tokenAddress, parseEther(amountToAdd))
         return await this.contract.addLiquidity(tokenAddress, parseEther(amountToAdd), { gasLimit: calculateGas(gas.toNumber()) })    
@@ -104,8 +107,9 @@ export class LiquidityControllerService {
 
     public async buyRooted(tokenAddress: string, amountToSpend: string) {
         if (this.token === Token.upTether) {
-            const gas = await this.contract.estimateGas.buyRooted(parseEther(amountToSpend))
-            return await this.contract.buyRooted(parseEther(amountToSpend), { gasLimit: calculateGas(gas.toNumber()) })
+            const amount = parseUnits(amountToSpend, baseDecimals.get(this.token)!);
+            const gas = await this.contract.estimateGas.buyRooted(amount);
+            return await this.contract.buyRooted(amount, { gasLimit: calculateGas(gas.toNumber()) })
         }
         const gas = await this.contract.estimateGas.buyRooted(tokenAddress, parseEther(amountToSpend))
         return await this.contract.buyRooted(tokenAddress, parseEther(amountToSpend), { gasLimit: calculateGas(gas.toNumber()) })    
