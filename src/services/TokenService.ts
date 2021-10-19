@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts'
 import erc20Abi from '../constants/abis/erc20.json'
 import { Web3Provider } from '@ethersproject/providers'
 import { AddressBalanceInfo } from '../dtos/AddressBalanceInfo';
-import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, liquidityControllerAddresses} from '../constants';
+import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, liquidityControllerAddresses, feeSplitterAddresses} from '../constants';
 import { TokenBalanceInfo } from '../dtos/TokenBalanceInfo';
 import BigNumber from 'bignumber.js';
 import { getDisplayBalance, getFullDisplayBalance } from '../utils/formatBalance';
@@ -53,8 +53,18 @@ export class TokenService {
         this.tokenToContractMap.set(this.elitePoolToken.address, new Contract(this.elitePoolToken.address, erc20Abi, signer))
     }
 
+    public async getFeeSplitterBalance() {
+        const rootedContract = await this.tokenToContractMap.get(this.rootedToken.address)!;
+        if (rootedContract) {
+            const token = getTokenByAddress(this.rootedToken.address)!;
+            const account = feeSplitterAddresses.get(this.token)!;
+            const balance = await rootedContract.balanceOf(account);         
+            return getDisplayBalance(new BigNumber(balance.toString()), token.decimals)
+        }
+        return "N/A";
+    }
+
     public async getBalance(account: string, tokenAddress: string) {
-       
         const balance = await this.tokenToContractMap.get(tokenAddress)!.balanceOf(account)
         const token = getTokenByAddress(tokenAddress)!;
         return getFullDisplayBalance(new BigNumber(balance.toString()), token.decimals)

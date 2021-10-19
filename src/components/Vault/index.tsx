@@ -19,6 +19,8 @@ import BuyAndTax from "./BuyAndTax"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext"
 import { supportedChain } from "../../utils"
 import { useWeb3React } from "@web3-react/core"
+import PayFees from "./PayFees"
+import SetFees from "./SetFees"
 
 const Wrapper = styled.div`
     display: grid;
@@ -64,7 +66,8 @@ const Vault = () => {
   const [removeBaseLiquidityOpen, setRemoveBaseLiquidityOpen] = useState<boolean>(false)
   const [buyRootWithBaseOpen, setBuyRootWithBaseOpen] = useState<boolean>(false)
   const [sellRootForBaseOpen, setSellRootForBaseOpen] = useState<boolean>(false)
-
+  const [payFeesOpen, setPayFeesOpen] = useState<boolean>(false)
+  const [setFeesOpen, setSetFeesOpen] = useState<boolean>(false)
  
   const [sweepFloorOpen, setSweepFloorOpen] = useState<boolean>(false)
   const [balancePriceBaseOpen, setBalancePriceBaseOpen] = useState<boolean>(false)
@@ -96,6 +99,8 @@ const Vault = () => {
       <RemoveLiquidity tokenAddress={baseAddress} lpAddress={basePoolAddress} isOpen={removeBaseLiquidityOpen} onDismiss={() => setRemoveBaseLiquidityOpen(false)} />
       <BuyRoot tokenAddress={baseAddress} isOpen={buyRootWithBaseOpen} onDismiss={() => setBuyRootWithBaseOpen(false)} />
       <SellRoot tokenAddress={baseAddress} isOpen={sellRootForBaseOpen} onDismiss={() => setSellRootForBaseOpen(false)} />
+      <PayFees isOpen={payFeesOpen} onDismiss={() => setPayFeesOpen(false)}/>
+      <SetFees isOpen={setFeesOpen} onDismiss={() => setSetFeesOpen(false)}/>
    
       <SweepFloor isOpen={sweepFloorOpen} onDismiss={() => setSweepFloorOpen(false)}/>
       <SetInfinitePumper isOpen={liquidityControllerOpen} onDismiss={() => setLiquidityControllerOpen(false)} />
@@ -144,6 +149,16 @@ const Vault = () => {
           {token !== Token.upTether && <ButtonPrimaryRed disabled={!supportedChain(chainId!, token)} onClick={() => setSellRootForBaseOpen(true)}>Sell Rooted for Base</ButtonPrimaryRed>}
         </SectionContent>
       </SectionWrapper>
+
+     {token !== Token.ROOT  &&  
+      <SectionWrapper>
+        <SectionHeader>Fee Splitter</SectionHeader>
+        <SectionContent>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setPayFeesOpen(true)}>Pay Fees</ButtonPrimary>
+          <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setSetFeesOpen(true)}>Set Fees</ButtonPrimary>
+        </SectionContent>
+      </SectionWrapper>}
+     
       
       <SectionWrapper>
         <SectionHeader>Recover</SectionHeader>

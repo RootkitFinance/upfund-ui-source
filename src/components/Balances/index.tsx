@@ -12,7 +12,7 @@ import { RefreshCw } from 'react-feather'
 import { TokenBalanceInfo } from "../../dtos/TokenBalanceInfo";
 import { PoolInfo } from "../../dtos/PoolInfo";
 import { TokenInfo } from "../../dtos/TokenInfo";
-import { basePoolAddresses, getTokenByAddress, baseAddresses, eliteAddresses, elitePoolAddresses, calculatorAddresses, Token } from "../../constants";
+import { basePoolAddresses, getTokenByAddress, baseAddresses, eliteAddresses, elitePoolAddresses, calculatorAddresses, Token, feeSplitterAddresses } from "../../constants";
 import { CalculatorService } from "../../services/CalculatorService";
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 
@@ -265,6 +265,45 @@ const FloorCalculator = ({ valid } : {valid: boolean}) => {
     )
 }
 
+const FeeSplitter = ({ valid } : {valid: boolean}) => {
+    const { account, library, chainId } = useWeb3React()
+    const [loading, setLoading] = useState<boolean>(false)
+    const [balance, setBalance] = useState<string>()
+    const { token, rootedTicker } = useContext(ControlCenterContext)
+
+    const getBalance = async () =>{
+        if (library && account && chainId && supportedChain(chainId!, token) && token !== Token.ROOT) {      
+            const service = new TokenService(token, library, account!)      
+            setLoading(true)           
+            setBalance(await service.getFeeSplitterBalance())
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {           
+        const getBalance = async () => {           
+            if (library && account && chainId && supportedChain(chainId!, token) && token !== Token.ROOT) {  
+                const service = new TokenService(token, library, account!)    
+                setLoading(true)
+               
+                setBalance(await service.getFeeSplitterBalance())
+                setLoading(false)
+            }
+        }       
+        getBalance()
+    }, [library, account, chainId, token, valid])
+
+    return(
+        <SectionWrapper>
+            <SectionHeader name={"FeeSplitter"} address={feeSplitterAddresses.get(token)!} onRefresh={getBalance} /> 
+            <BalancesWrapper>
+                <div>{loading || !valid ? <BalanceLoader/> : balance}</div>
+                <Ticker>{rootedTicker}</Ticker>
+            </BalancesWrapper>
+        </SectionWrapper>
+    )
+}
+
 const Balances = () => {
     const { account, library, chainId } = useWeb3React()
     const [balances, setBalances] = useState<AddressBalanceInfo[]>()
@@ -301,6 +340,7 @@ const Balances = () => {
         { token !== Token.upTether && <PoolBalances poolToken={baseToken} poolAddress={basePoolAddress} valid={valid}/> }
         <PoolBalances poolToken={eliteToken} poolAddress={elitePoolAddress} valid={valid}/>
         <FloorCalculator valid={valid}/> 
+        { token !== Token.ROOT && <FeeSplitter valid={valid}/> }
     </Wrapper>)
 }
 
