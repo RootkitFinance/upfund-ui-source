@@ -82,7 +82,7 @@ export const NumericalInput = React.memo(function InnerInput({
         pattern="^[0-9]*[.,]?[0-9]*$"
         placeholder={placeholder || '0.0'}
         minLength={1}
-        maxLength={20}
+        maxLength={30}
         spellCheck="false"
       />
     )

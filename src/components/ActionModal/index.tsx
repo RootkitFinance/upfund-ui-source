@@ -70,7 +70,7 @@ const ActionModal = (
         try {
             seStatus(Status.Pending)
             setError("")
-            const txResponse = await action()    
+            const txResponse = await action()
             if (txResponse)
             {                 
                 addTransaction(title, txResponse)

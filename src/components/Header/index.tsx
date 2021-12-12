@@ -1,17 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Web3Status from "../Web3Status";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { YellowCard } from "../Card";
 import { RowFixed } from "../Row";
-//import { Option } from "../Button";
-import { NETWORK_LABELS } from "../../constants";
+import { Option } from "../Button";
+import { NETWORK_LABELS, SUPPORTED_NETWORKS, Token, tokenChains } from "../../constants";
 import PriceStatus from "../PriceStatus";
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { supportedChain } from "../../utils";
-import { NavLink } from "react-router-dom";
-import { darken } from "polished";
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -106,39 +104,36 @@ const LinksWrapper = styled.div`
   justify-self: start;
 `;
 
-const activeClassName = 'ACTIVE'
-
-const StyledNavLink = styled(NavLink).attrs({
-  activeClassName
-})`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: left;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
-  width: fit-content;
-  margin: 0 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-
-  &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.text1};
-  }
-
-  :hover,
-  :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-  }
-`
-
 export default function Header() {
-  const { account, chainId } = useWeb3React<Web3Provider>();
+  const { account, library, chainId } = useWeb3React<Web3Provider>();
   const { token } = useContext(ControlCenterContext);
   const suppotedChain = chainId && supportedChain(chainId!, token);
+  const [selectedToken, setSelectedToken] = useState<Token>(token);
+  const [selectedTokenChain, setSelectedTokenChain] = useState<number>(chainId ?? 1);
+
+  const { setToken } = useContext(ControlCenterContext);
+
+  useEffect(() => {
+    setToken(selectedToken);
+    setSelectedTokenChain(tokenChains.get(selectedToken)!);
+  },
+  [selectedToken])
+
+  useEffect(() => {
+    switchChain();
+  },
+  [selectedTokenChain])
+
+
+  const switchChain = () => { 
+    const params = SUPPORTED_NETWORKS[selectedTokenChain]!;
+    if (selectedTokenChain === 1) {
+      library?.send('wallet_switchEthereumChain', [{ chainId: params.chainId }, account])
+    } else {
+      library?.send('wallet_addEthereumChain', [params, account]).catch((error: any) => {console.log(error)})
+    }
+  }  
+
   return (
     <HeaderFrame>
       <HeaderRow>
@@ -147,15 +142,11 @@ export default function Header() {
         </LogoWrapper>
       </HeaderRow>
       <LinksWrapper>
-        <StyledNavLink id={`stake-nav-link`} to={'/'} isActive={(match, location) => location.pathname === "/" || location.pathname.toLowerCase() === "/root"}>
-          ROOT
-        </StyledNavLink>
-        <StyledNavLink  id={`stake-nav-link`} exact={true}  to={'/uptether'}>
-          upTether
-        </StyledNavLink>
-        <StyledNavLink  id={`stake-nav-link`} exact={true}  to={'/upbnb'}>
-          upBNB
-        </StyledNavLink>        
+        <Option active={selectedToken === Token.ROOT} onClick={() => setSelectedToken(Token.ROOT)}>ROOT</Option>
+        <Option active={selectedToken === Token.upTether} onClick={() => setSelectedToken(Token.upTether)}>upTether</Option>
+        <Option active={selectedToken === Token.upBNB} onClick={() => setSelectedToken(Token.upBNB)}>upBNB</Option>
+        <Option active={selectedToken === Token.upMatic} onClick={() => setSelectedToken(Token.upMatic)}>upMatic</Option>
+        <Option active={selectedToken === Token.upCake} onClick={() => setSelectedToken(Token.upCake)}>upCake</Option>
       </LinksWrapper>
       <HeaderControls>
         {suppotedChain && <PriceStatus />}

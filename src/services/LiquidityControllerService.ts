@@ -14,7 +14,7 @@ export class LiquidityControllerService {
     constructor(token: Token, library: Web3Provider, account: string) {
         this.token = token;
         const signer = library.getSigner(account).connectUnchecked()
-        const abi = token === Token.ROOT ? rootVaultAbi : token === Token.upBNB ? upBNBVaultAbi : upTeatherVaultAbi;
+        const abi = token === Token.ROOT ? rootVaultAbi : token === Token.upTether ? upTeatherVaultAbi : upBNBVaultAbi;
         this.contract = new Contract(liquidityControllerAddresses.get(token)!, abi, signer);        
     } 
 

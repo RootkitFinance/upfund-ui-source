@@ -1,13 +1,10 @@
 import { useWeb3React } from "@web3-react/core"
-import React, { useContext, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import React from "react"
 import styled from "styled-components"
 import Balances from "../../components/Balances"
 import Vault from "../../components/Vault"
 import Deployer from "../../components/Deployer"
 import TradeHistory from "../../components/TradeHistory"
-import { Token } from "../../constants"
-import { ControlCenterContext } from "../../contexts/ControlCenterContext"
 import Addresses from "../../components/Addresses"
 import Fees from "../../components/Fees"
 
@@ -66,28 +63,7 @@ const FeesSection = styled(Section)`
 `
 
 export const Home = () => {
-    const { account, library, chainId } = useWeb3React()
-    const { token } = useParams<{ token: string }>();
-    const { setToken } = useContext(ControlCenterContext);
-
-    useEffect(() => {
-        if (!token) {
-            setToken(Token.ROOT);
-            return;
-        }
-        const tokenParameter = token.toLowerCase();
-        if(tokenParameter === "uptether") {
-            setToken(Token.upTether);
-            return;
-        }
-
-        if(tokenParameter === "upbnb") {
-            setToken(Token.upBNB);
-            return;
-        }
-
-        setToken(Token.ROOT);
-    })
+    const { account, library, chainId } = useWeb3React()   
 
     return (
         account && library && chainId ?
