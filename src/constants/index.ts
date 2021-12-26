@@ -92,7 +92,7 @@ export const stakingAddresses = new Map([
   [Token.upTether, "0xc328f44ecaCE72cdeBc3e8E86E6705604BE2d2e1"],
   [Token.upBNB, "0x49Ba5c83F151F8f786CF2623243b66dC42492d41"],
   [Token.upMatic, "0x6995c181Aae9fEA21EF5a860297b92Df8A57f7A3"],
-  [Token.upCake, "0x0912857cB6Ad37bd5e8A32F457d7D16BDb0A2E5e"],
+  [Token.upCake, "0x0f26b5b438938633e4268ba3b8f497e43add599c"],
 ])
 
 export const basePoolAddresses = new Map([
