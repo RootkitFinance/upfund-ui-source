@@ -163,7 +163,7 @@ export class VaultService {
         const totalSupply = await pairContract.totalSupply();
         const amountAfterRemovingLiquidity = lpAmount.mul(tokenBalance).div(totalSupply);
         const amountsOut = await this.routerContract.getAmountsOut(amountAfterRemovingLiquidity.toString(), [tokenAddress, this.rooted]);
-        const amountOut = amountsOut[1];
+        const amountOut = amountsOut[1].sub(amountsOut[1].mul(lpAmount).div(totalSupply));
         return amountOut.mul(BigNumber.from(99)).div(BigNumber.from(100));
     }
 
