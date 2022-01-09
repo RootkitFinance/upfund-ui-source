@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { liquidityControllerAddresses, basePoolAddresses } from "../../constants"
-import { LiquidityControllerService } from "../../services/LiquidityControllerService"
+import { vaultAddresses, basePoolAddresses } from "../../constants"
+import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { supportedChain } from "../../utils";
@@ -15,7 +15,7 @@ const ZapBaseToElite = ({ isOpen, onDismiss }: { isOpen: boolean, onDismiss: () 
     const { token } = useContext(ControlCenterContext);
 
     useEffect(() => {
-        const getKethBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(liquidityControllerAddresses.get(token)!, basePoolAddresses.get(token)!))
+        const getKethBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(vaultAddresses.get(token)!, basePoolAddresses.get(token)!))
         if(isOpen && chainId && supportedChain(chainId!, token)) {
             getKethBalance()
         }
@@ -24,7 +24,7 @@ const ZapBaseToElite = ({ isOpen, onDismiss }: { isOpen: boolean, onDismiss: () 
     const zapBaseToElite = async () => {
         const amount = parseFloat(value)
         if (!Number.isNaN(amount) && amount > 0) {
-            return await new LiquidityControllerService(token, library, account!).zapBaseToElite(value)
+            return await new VaultService(token, library, account!).zapBaseToElite(value)
         }
     }
 

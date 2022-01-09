@@ -2,23 +2,18 @@
   {
     "inputs": [
       {
-        "internalType": "contract IPancakeRouter02",
-        "name": "_pancakeRouter",
-        "type": "address"
-      },
-      {
         "internalType": "contract IERC20",
         "name": "_base",
         "type": "address"
       },
       {
-        "internalType": "contract IERC20",
-        "name": "_rooted",
+        "internalType": "contract IERC31337",
+        "name": "_elite",
         "type": "address"
       },
       {
-        "internalType": "contract IERC31337",
-        "name": "_elite",
+        "internalType": "contract IERC20",
+        "name": "_rooted",
         "type": "address"
       },
       {
@@ -29,6 +24,11 @@
       {
         "internalType": "contract RootedTransferGate",
         "name": "_gate",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IPancakeRouter02",
+        "name": "_pancakeRouter",
         "type": "address"
       }
     ],
@@ -78,6 +78,11 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minAmountOut",
+        "type": "uint256"
       }
     ],
     "name": "balancePriceBase",
@@ -90,6 +95,11 @@
       {
         "internalType": "uint256",
         "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minAmountOut",
         "type": "uint256"
       }
     ],
@@ -108,6 +118,11 @@
       {
         "internalType": "uint256",
         "name": "amountToSpend",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minAmountOut",
         "type": "uint256"
       },
       {
@@ -136,6 +151,11 @@
       {
         "internalType": "uint256",
         "name": "amountToSpend",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minAmountOut",
         "type": "uint256"
       }
     ],
@@ -211,6 +231,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "minAmountOut",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
         "name": "token",
         "type": "address"
@@ -260,6 +285,11 @@
         "internalType": "uint256",
         "name": "amountToSpend",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minAmountOut",
+        "type": "uint256"
       }
     ],
     "name": "sellRooted",
@@ -308,16 +338,23 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "controlAddress",
+        "name": "maangerAddress",
         "type": "address"
       },
       {
         "internalType": "bool",
-        "name": "controller",
+        "name": "allow",
         "type": "bool"
       }
     ],
-    "name": "setLiquidityController",
+    "name": "setSeniorVaultManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "setupPools",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

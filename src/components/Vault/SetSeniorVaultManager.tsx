@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react"
 import { useWeb3React } from "@web3-react/core"
-import { LiquidityControllerService } from "../../services/LiquidityControllerService"
+import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { isAddress } from "../../utils";
 import AddressInput from "../AddressInput"
@@ -27,9 +27,9 @@ const SetSeniorVaultManager = ({ isOpen, onDismiss } : { isOpen: boolean, onDism
     const [isManager, setIsManager] = useState<boolean>(true)
     const { token } = useContext(ControlCenterContext);
 
-    const setLiquidityController = async () => {        
+    const setSeniorVaultManager = async () => {        
         if (address && isAddress(address)) {
-            return await new LiquidityControllerService(token, library, account!).setLiquidityController(address, isManager)
+            return await new VaultService(token, library, account!).setSeniorVaultManager(address, isManager)
         }
     }
 
@@ -39,7 +39,7 @@ const SetSeniorVaultManager = ({ isOpen, onDismiss } : { isOpen: boolean, onDism
     }
 
     return (
-        <ActionModal isOpen={isOpen} onDismiss={close} action={setLiquidityController} title={"Set Senior Vault Manager"}>
+        <ActionModal isOpen={isOpen} onDismiss={close} action={setSeniorVaultManager} title={"Set Senior Vault Manager"}>
            <AddressInput value={address} label={"Manager"} onChange={setAddress} />
            <ToggleWrapper>
                <ToggleLabel>Senior Vault Manager</ToggleLabel>

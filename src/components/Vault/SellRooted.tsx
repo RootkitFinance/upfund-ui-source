@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { getTokenByAddress, liquidityControllerAddresses, rootedAddresses } from "../../constants"
-import { LiquidityControllerService } from "../../services/LiquidityControllerService"
+import { getTokenByAddress, vaultAddresses, rootedAddresses } from "../../constants"
+import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { supportedChain } from "../../utils";
@@ -16,7 +16,7 @@ const SellRooted = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string
     const tokenSymbol = getTokenByAddress(tokenAddress)!.symbol
 
     useEffect(() => {
-        const getRootedBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(liquidityControllerAddresses.get(token)!, rootedAddresses.get(token)!))
+        const getRootedBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(vaultAddresses.get(token)!, rootedAddresses.get(token)!))
         if (isOpen && chainId && supportedChain(chainId!, token)) {
             getRootedBalance()
         }
@@ -25,7 +25,7 @@ const SellRooted = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string
     const sellRooted = async () => {
         const amount = parseFloat(value)
         if (!Number.isNaN(amount) && amount > 0) {
-            return await new LiquidityControllerService(token, library, account!).sellRooted(tokenAddress, value)
+            return await new VaultService(token, library, account!).sellRooted(tokenAddress, value)
         }
     }
 

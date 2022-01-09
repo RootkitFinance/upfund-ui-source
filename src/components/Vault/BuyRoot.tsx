@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { getTokenByAddress, liquidityControllerAddresses } from "../../constants"
-import { LiquidityControllerService } from "../../services/LiquidityControllerService"
+import { getTokenByAddress, vaultAddresses } from "../../constants"
+import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { supportedChain } from "../../utils";
@@ -18,7 +18,7 @@ const BuyRoot = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, i
     useEffect(() => {
         const getBalance = async () => {
             if(isOpen && chainId && supportedChain(chainId!, token)) {
-                setBalance(await new TokenService(token, library, account!).getBalance(liquidityControllerAddresses.get(token)!, tokenAddress))
+                setBalance(await new TokenService(token, library, account!).getBalance(vaultAddresses.get(token)!, tokenAddress))
             }         
         }
         getBalance()
@@ -27,7 +27,7 @@ const BuyRoot = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, i
     const buyRoot = async () => {
         const amount = parseFloat(value)
         if (!Number.isNaN(amount) && amount > 0) {
-            return await new LiquidityControllerService(token, library, account!).buyRooted(tokenAddress, value)
+            return await new VaultService(token, library, account!).buyRooted(tokenAddress, value)
         }
     }
 

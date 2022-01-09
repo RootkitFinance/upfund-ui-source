@@ -110,12 +110,12 @@ export const elitePoolAddresses = new Map([
   [Token.upCake, "0x9dC5207bb1CF76374443Fbc474fFf6bEC6D65223"],
 ])
 
-export const liquidityControllerAddresses = new Map([
-  [Token.ROOT, "0x424eE0bA90c1B07A7c8A1A38aE999a88ED2cA5D1"],
-  [Token.upTether, "0x4C66a6f06B8bC4243479121A4eF0061650e5D137"],
-  [Token.upBNB, "0xd22F3E99F7e16566A104A47c9c15e97C6B4Ad122"],
-  [Token.upMatic, "0xD63a09dEf429E7Aa11c46aD02A011552AE9cE5AF"],
-  [Token.upCake, "0x929aaf8a649a7193C9cB490936Fa7Bf175931a44"],
+export const vaultAddresses = new Map([
+  [Token.ROOT, "0xc547D2bc0C3606602a4C9A530BFadDBc07A7f06F"],
+  [Token.upTether, "0x3B2688B05B40C23bc5EA11b116733cD282450207"],
+  [Token.upBNB, "0xe6Fc0Bef42a263dcC375a82Fa36Ee520Fce2F6c4"],
+  [Token.upMatic, "0xd9E0b819B782CF7e1b554c750964dC4D8c92e1EB"],
+  [Token.upCake, "0x816b55f5afa643fd60D5Ee17C5733b0f33197ff9"],
 ])
 
 export const calculatorAddresses = new Map([
@@ -142,8 +142,15 @@ export const feeSplitterAddresses = new Map([
 ])
 
 export const arbitrageAddresses = new Map([
-  [Token.ROOT, "0x74702a9a9436FD6D3Cee6efa977Cc5CA766260bf"],
-  [Token.upBNB, "0xA173a0A2c4BdC9dBaC569b8DDc4bB89A67a66Ee9"],
+  [Token.ROOT, "0xcf53281777CeBcD2D2646E12Ca9e8fAeA0e1a3aF"],
+  [Token.upBNB, "0xfB84e9F38Ac5dB78155c26196b5eCC75040282a9"],
+  [Token.upMatic, "0x36d45358CeEC6D8fF80572d0210aaCA9c66E3F66"],
+  [Token.upCake, "0x9D6DF694edc9a720dCc637Cd5644b4f1C274DF28"]
+])
+
+export const singleSideLiqudityAdderAddresses = new Map([
+  [Token.ROOT, ""],
+  [Token.upBNB, "0x33C8A1B3275c2B2D5bf7fe7C536F3B6B34677566"],
 ])
 
 export const routerAddresses = new Map([

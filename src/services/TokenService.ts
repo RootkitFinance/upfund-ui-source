@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts'
 import erc20Abi from '../constants/abis/erc20.json'
 import { Web3Provider } from '@ethersproject/providers'
 import { AddressBalanceInfo } from '../dtos/AddressBalanceInfo';
-import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, liquidityControllerAddresses, feeSplitterAddresses} from '../constants';
+import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, vaultAddresses, feeSplitterAddresses} from '../constants';
 import { TokenBalanceInfo } from '../dtos/TokenBalanceInfo';
 import BigNumber from 'bignumber.js';
 import { getDisplayBalance, getFullDisplayBalance } from '../utils/formatBalance';
@@ -36,7 +36,7 @@ export class TokenService {
             ? [ this.baseToken, this.eliteToken, this.rootedToken, this.elitePoolToken ] 
             : [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ]);
 
-        this.addressToTokensMap.set(liquidityControllerAddresses.get(token)!, token === Token.upTether 
+        this.addressToTokensMap.set(vaultAddresses.get(token)!, token === Token.upTether 
             ? [ this.baseToken, this.eliteToken, this.rootedToken, this.elitePoolToken ] 
             : [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ]);
 
@@ -72,7 +72,7 @@ export class TokenService {
 
     public getEmptyBalances() {
         const addressBalances: AddressBalanceInfo[] = []
-        addressBalances.push(new AddressBalanceInfo("Vault", liquidityControllerAddresses.get(this.token)!, this.addressToTokensMap.get(liquidityControllerAddresses.get(this.token)!)!.map(x => new TokenBalanceInfo(x, "0"))))
+        addressBalances.push(new AddressBalanceInfo("Vault", vaultAddresses.get(this.token)!, this.addressToTokensMap.get(vaultAddresses.get(this.token)!)!.map(x => new TokenBalanceInfo(x, "0"))))
         addressBalances.push(new AddressBalanceInfo("Deployer", DEPLOYER_ADDRESS, this.addressToTokensMap.get(DEPLOYER_ADDRESS)!.map(x => new TokenBalanceInfo(x, "0")))) 
         return addressBalances
     }

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled, { ThemeContext } from "styled-components";
-import { baseAddresses, basePoolAddresses, baseTickers, calculatorAddresses, DEPLOYER_ADDRESS, eliteAddresses, elitePoolAddresses, eliteTickers, factoryAddresses, feeSplitterAddresses, liquidityControllerAddresses, rootedAddresses, rootedRouterAddresses, rootedTickers, ROOT_FEEDER_ADDRESS, routerAddresses, routerName, stakingAddresses, stakingTickers, Token, transfetGateAddresses } from "../../constants";
+import { baseAddresses, basePoolAddresses, baseTickers, calculatorAddresses, DEPLOYER_ADDRESS, eliteAddresses, elitePoolAddresses, eliteTickers, factoryAddresses, feeSplitterAddresses, vaultAddresses, rootedAddresses, rootedRouterAddresses, rootedTickers, ROOT_FEEDER_ADDRESS, routerAddresses, routerName, stakingAddresses, stakingTickers, Token, transfetGateAddresses } from "../../constants";
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { AddressInfo } from "../../dtos/AddressInfo";
 import { ExternalLink } from "../Link";
@@ -95,7 +95,7 @@ const Addresses = () => {
         const s: AddressInfo[] = [ 
             new AddressInfo("Trasfer Gate", transfetGateAddresses.get(token)!),
             new AddressInfo("Floor Calculator", calculatorAddresses.get(token)!),
-            new AddressInfo("Vault", liquidityControllerAddresses.get(token)!)
+            new AddressInfo("Vault", vaultAddresses.get(token)!)
         ];
 
         if (token !== Token.ROOT) {

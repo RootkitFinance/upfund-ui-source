@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { eliteAddresses, liquidityControllerAddresses } from "../../constants"
-import { LiquidityControllerService } from "../../services/LiquidityControllerService"
+import { eliteAddresses, vaultAddresses } from "../../constants"
+import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { supportedChain } from "../../utils";
@@ -15,7 +15,7 @@ const RemoveLiquidity = ({ tokenAddress, lpAddress, isOpen, onDismiss } : { toke
     const { token } = useContext(ControlCenterContext);
 
     useEffect(() => {
-        const getLpBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(liquidityControllerAddresses.get(token)!, lpAddress))
+        const getLpBalance = async () => setBalance(await new TokenService(token, library, account!).getBalance(vaultAddresses.get(token)!, lpAddress))
         if(isOpen && chainId && supportedChain(chainId!, token)) {
             getLpBalance()
         }
@@ -24,7 +24,7 @@ const RemoveLiquidity = ({ tokenAddress, lpAddress, isOpen, onDismiss } : { toke
     const removeLiquidity = async () => {
         const amount = parseFloat(value)
         if (!Number.isNaN(amount) && amount > 0) {
-            return await new LiquidityControllerService(token, library, account!).removeLiquidity(tokenAddress, value)
+            return await new VaultService(token, library, account!).removeLiquidity(tokenAddress, value)
         }
     }
 

@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { useWeb3React } from "@web3-react/core"
 import ActionModal from "../ActionModal"
-import { LiquidityControllerService}  from "../../services/LiquidityControllerService";
+import { VaultService}  from "../../services/VaultService";
 import styled from "styled-components";
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 
@@ -15,7 +15,7 @@ const SweepFloor = ({ isOpen, onDismiss } : { isOpen: boolean, onDismiss: () => 
     const { token } = useContext(ControlCenterContext);
     
     const sweepFloor = async () => {        
-        return await new LiquidityControllerService(token, library, account!).sweepFloor()
+        return await new VaultService(token, library, account!).sweepFloor()
     }
 
     const close = () => {
