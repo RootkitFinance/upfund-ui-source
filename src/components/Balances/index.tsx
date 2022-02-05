@@ -236,7 +236,7 @@ const FloorCalculator = ({ valid } : {valid: boolean}) => {
         if (library && account && chainId && supportedChain(chainId!, token)) {      
             const service = new CalculatorService(library, account!, token)      
             setLoading(true)           
-            setSubFloor(await service.calculatorSubFloor())
+            setSubFloor(await service.calculateSubFloor())
             setLoading(false)
         }
     }
@@ -246,7 +246,7 @@ const FloorCalculator = ({ valid } : {valid: boolean}) => {
             if (library && account && chainId && supportedChain(chainId!, token)) {  
                 const service = new CalculatorService(library, account!, token)      
                 setLoading(true)           
-                setSubFloor(await service.calculatorSubFloor())
+                setSubFloor(await service.calculateSubFloor())
                 setLoading(false)
             }
         }       
@@ -338,9 +338,10 @@ const Balances = () => {
     <Wrapper>
         {balances?.map(x => (<AddressBalances key={x.address} globalLoading={loading} info={x} valid={valid}/>)) }
         { token !== Token.upTether && <PoolBalances poolToken={baseToken} poolAddress={basePoolAddress} valid={valid}/> }
-        <PoolBalances poolToken={eliteToken} poolAddress={elitePoolAddress} valid={valid}/>
-        <FloorCalculator valid={valid}/> 
+        { token !== Token.upCro && <PoolBalances poolToken={eliteToken} poolAddress={elitePoolAddress} valid={valid}/> }
         { token !== Token.ROOT && <FeeSplitter valid={valid}/> }
+        <FloorCalculator valid={valid}/> 
+       
     </Wrapper>)
 }
 

@@ -6,14 +6,17 @@ import { NetworkConnector } from './NetworkConnector'
 
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL!
 
-export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1')
+export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1');
+
+export const NETWORK_URLS: { [key in number]: string } = {
+  [1]:"https://mainnet.infura.io/v3/11c990cbd8d3486397e398470aaf124a",
+  [56]: "https://speedy-nodes-nyc.moralis.io/1aa4d3cb15f8ba2db24211d7/bsc/mainnet",
+  [137]: "https://polygon-mainnet.infura.io/v3/f7d60406acb14e3d996b21eb33d74403",
+  [25]:"https://cronos.nodes.cybercorey.net"
+}
 
 export const network = new NetworkConnector({
-    urls: { 
-      [1]: NETWORK_URL,
-      [56]: 'https://bsc-dataseed.binance.org/',
-      [137]: 'https://polygon-rpc.com/'
-    }
+    urls: NETWORK_URLS
   })
 
 let networkLibrary: Web3Provider | undefined
@@ -21,16 +24,18 @@ export function getNetworkLibrary(): Web3Provider {
   return (networkLibrary = networkLibrary ?? new Web3Provider(network.provider as any))
 }
 
+const supportedChainIds = [1, 56, 137, 43114, 25]
+
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 56, 137]
+  supportedChainIds: supportedChainIds
 })
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 1: NETWORK_URL }, // Infura URL does not work 
+  rpc: NETWORK_URLS, // Infura URL does not work 
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
-  pollingInterval: 15000
+  supportedChainIds: supportedChainIds,
 })
 
 

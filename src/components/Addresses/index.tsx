@@ -74,12 +74,13 @@ const Addresses = () => {
         const eliteTiker = eliteTickers.get(token)!;
         const rootedTiker = rootedTickers.get(token)!;
 
-        const t: AddressInfo[] = [ 
-            new AddressInfo(baseTiker, baseAddresses.get(token)!),
-            new AddressInfo(eliteTiker, eliteAddresses.get(token)!),
-            new AddressInfo(rootedTiker, rootedAddresses.get(token)!)
-        ];
-    
+        const t: AddressInfo[] = [new AddressInfo(baseTiker, baseAddresses.get(token)!)];
+
+        if (token !== Token.upCro ) {
+            t.push( new AddressInfo(eliteTiker, eliteAddresses.get(token)!));
+        }
+        t.push(new AddressInfo(rootedTiker, rootedAddresses.get(token)!));
+      
         if (token !== Token.ROOT) {
             t.push(new AddressInfo(stakingTickers.get(token)!, stakingAddresses.get(token)!));
         }
@@ -89,7 +90,9 @@ const Addresses = () => {
         if (token !== Token.upTether ) {
             p.push(new AddressInfo(`${baseTiker} / ${rootedTiker} Pool`, basePoolAddresses.get(token)!));
         }
-        p.push(new AddressInfo(`${eliteTiker} / ${rootedTiker} Pool`, elitePoolAddresses.get(token)!));
+        if (token !== Token.upCro ) {
+            p.push(new AddressInfo(`${eliteTiker} / ${rootedTiker} Pool`, elitePoolAddresses.get(token)!));
+        }
         setPools(p);
 
         const s: AddressInfo[] = [ 

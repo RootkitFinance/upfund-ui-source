@@ -86,7 +86,7 @@ export const Home = () => {
             </AddressesSection>
             <FeesSection>
                 <SectionHeader>Fees</SectionHeader>
-                <Fees />             
+                <Fees />
             </FeesSection>
             <BalancesSection>
                 <SectionHeader>Balances</SectionHeader>

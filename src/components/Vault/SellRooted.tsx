@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { getTokenByAddress, vaultAddresses, rootedAddresses } from "../../constants"
+import { getTokenByAddress, vaultAddresses, rootedAddresses, Token } from "../../constants"
 import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { supportedChain } from "../../utils";
+import { UpCroVaultService } from "../../services/UpCroVaultService";
 
 const SellRooted = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, isOpen: boolean, onDismiss: () => void }) => {
     const { account, library, chainId } = useWeb3React()
@@ -25,7 +26,9 @@ const SellRooted = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string
     const sellRooted = async () => {
         const amount = parseFloat(value)
         if (!Number.isNaN(amount) && amount > 0) {
-            return await new VaultService(token, library, account!).sellRooted(tokenAddress, value)
+            return token === Token.upCro 
+            ? await new UpCroVaultService(library, account!).sellRooted(value)            
+            : await new VaultService(token, library, account!).sellRooted(tokenAddress, value)
         }
     }
 

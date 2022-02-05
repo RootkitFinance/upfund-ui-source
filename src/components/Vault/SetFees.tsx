@@ -50,7 +50,7 @@ const SetFees = ({ isOpen, onDismiss } : { isOpen: boolean, onDismiss: () => voi
                 value={keepRate}
                 onSubmit={() => {}}
                 label={"Keep Rate (1-100%)"}
-                onUserInput={setSellRate}
+                onUserInput={setKeepRate}
                 id={"keepSellInput"} />
         </ActionModal>
     )

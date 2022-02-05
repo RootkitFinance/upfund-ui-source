@@ -6,7 +6,8 @@ import { TokenInfo } from "../dtos/TokenInfo"
 export const NETWORK_LABELS: { [chainId in number]?: string } = {
   1: "Ethereum",  
   56: "Binance",
-  137: "Matic"
+  137: "Matic",
+  25: "Cronos"
 }
 
 export enum Token {
@@ -14,7 +15,8 @@ export enum Token {
   upTether,
   upBNB,
   upMatic,
-  upCake
+  upCake,
+  upCro
 }
 
 export const baseDecimals = new Map([
@@ -23,6 +25,7 @@ export const baseDecimals = new Map([
   [Token.upBNB, 18],
   [Token.upMatic, 18],
   [Token.upCake, 18],
+  [Token.upCro, 18],
 ])
 
 export const tokenChains = new Map([
@@ -31,6 +34,7 @@ export const tokenChains = new Map([
   [Token.upBNB, 56],
   [Token.upMatic, 137],
   [Token.upCake, 56],
+  [Token.upCro, 25],
 ])
 
 export const baseTickers = new Map([
@@ -39,6 +43,7 @@ export const baseTickers = new Map([
   [Token.upBNB, "wBNB"],
   [Token.upMatic, "wMATIC"],
   [Token.upCake, "CAKE"],
+  [Token.upCro, "CRO"],
 ])
 
 export const eliteTickers = new Map([
@@ -55,6 +60,7 @@ export const rootedTickers = new Map([
   [Token.upBNB, "upBNB"],
   [Token.upMatic, "upMATIC"],
   [Token.upCake, "upCAKE"],
+  [Token.upCro, "upCRO"],
 ])
 
 export const stakingTickers = new Map([
@@ -62,6 +68,7 @@ export const stakingTickers = new Map([
   [Token.upBNB, "xUpBNB"],  
   [Token.upMatic, "xUpMATIC"],
   [Token.upCake, "xUpCAKE"],
+  [Token.upCro, "xUpCRO"],
 ])
 
 export const baseAddresses = new Map([
@@ -70,6 +77,7 @@ export const baseAddresses = new Map([
   [Token.upBNB, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"],
   [Token.upMatic, "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"],
   [Token.upCake, "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"],
+  [Token.upCro, "0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23"]
 ])
 
 export const eliteAddresses = new Map([
@@ -78,6 +86,7 @@ export const eliteAddresses = new Map([
   [Token.upBNB, "0xb7db0850096aeaec1b615463202db441012c564f"],
   [Token.upMatic, "0x63ed7f9D97d6658E46dDA23e50DdF82D86070580"],
   [Token.upCake, "0x5C8E4C13c7db38C331eb85C114eb08d1BCd2f3c6"],
+  [Token.upCro, "0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23"]
 ])
 
 export const rootedAddresses = new Map([
@@ -86,6 +95,7 @@ export const rootedAddresses = new Map([
   [Token.upBNB, "0x1759254EB142bcF0175347D5A0f3c19235538a9A"],
   [Token.upMatic, "0xe6a11F125a834E0676F3f8f33eb347D4e1938264"],
   [Token.upCake, "0x982f535c1dA184876d6e264920EdcA36B78e9f4C"],
+  [Token.upCro, "0xb062084aFfDf75b9b494D56B8417F1B981Df790f"],
 ])
 
 export const stakingAddresses = new Map([
@@ -93,6 +103,11 @@ export const stakingAddresses = new Map([
   [Token.upBNB, "0x49Ba5c83F151F8f786CF2623243b66dC42492d41"],
   [Token.upMatic, "0x6995c181Aae9fEA21EF5a860297b92Df8A57f7A3"],
   [Token.upCake, "0x0f26b5b438938633e4268ba3b8f497e43add599c"],
+  [Token.upCro, "0x78Bf858Ef5f5C286cb8CAaa145D7376d7a96d90e"],
+])
+
+export const usdAddresses = new Map([
+  [Token.upCro, "0xc21223249CA28397B4B6541dfFaEcC539BfF0c59"]
 ])
 
 export const basePoolAddresses = new Map([
@@ -100,6 +115,7 @@ export const basePoolAddresses = new Map([
   [Token.upBNB, "0x27d078b13C2239606783679895Ec3b164da24D90"],
   [Token.upMatic, "0x928ed5a1259b1ce7b7c99ac5f100cf0db16b424e"],
   [Token.upCake, "0xB073ac3328B335612C6BB6861d69De475d517dA2"],
+  [Token.upCro, "0xb0a7d88202eB8bf3c43D506b712b4E474eB9cdA3"]
 ])
 
 export const elitePoolAddresses = new Map([
@@ -116,6 +132,7 @@ export const vaultAddresses = new Map([
   [Token.upBNB, "0xe6Fc0Bef42a263dcC375a82Fa36Ee520Fce2F6c4"],
   [Token.upMatic, "0xd9E0b819B782CF7e1b554c750964dC4D8c92e1EB"],
   [Token.upCake, "0x816b55f5afa643fd60D5Ee17C5733b0f33197ff9"],
+  [Token.upCro, "0x2774A22C1fE0d2561432C58ebE65a65664a25100"]
 ])
 
 export const calculatorAddresses = new Map([
@@ -124,6 +141,7 @@ export const calculatorAddresses = new Map([
   [Token.upBNB, "0x2Cf93f951C44980Fb1790524d4f1a32A5dC7dadC"],
   [Token.upMatic, "0x387b14c7f3d72679314567a063735f63632b127f"],
   [Token.upCake, "0x5C7725822912FA938f7A0164E4Ae925cDbdC0510"],
+  [Token.upCro, "0xc9aE79B03F1913d9CBe8FB973596dF64a3774Eed"]
 ])
 
 export const transfetGateAddresses = new Map([
@@ -132,6 +150,7 @@ export const transfetGateAddresses = new Map([
   [Token.upBNB, "0xF0282B35AA35885AB99c42dbc3Cd76097Be308aB"],
   [Token.upMatic, "0xf40e1Ad286872f4a43E2FF5ca294e8F4b7772F36"],
   [Token.upCake, "0xe281f2e3447787B46e0eB0b87E3A172CC3B7eBcD"],
+  [Token.upCro, "0xF6454A470E0303251644c47AD1dF82386a59C93D"]
 ])
 
 export const feeSplitterAddresses = new Map([
@@ -139,6 +158,7 @@ export const feeSplitterAddresses = new Map([
   [Token.upBNB, "0x6C6383dD4934a1157E0dCe5EE0B4a090b5D53ad2"],
   [Token.upMatic, "0x96E5b9e7bc0eC533385e18572b9155f9656ad735"],
   [Token.upCake, "0x6C6383dD4934a1157E0dCe5EE0B4a090b5D53ad2"],
+  [Token.upCro, "0x85dC171504D0a4B52Be6Ec9f98B94A62Cef48951"]
 ])
 
 export const arbitrageAddresses = new Map([
@@ -159,6 +179,7 @@ export const routerAddresses = new Map([
   [Token.upBNB, "0x10ed43c718714eb63d5aa57b78b54704e256024e"],
   [Token.upMatic, "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"],
   [Token.upCake, "0x10ed43c718714eb63d5aa57b78b54704e256024e"],
+  [Token.upCro, "0xdADaae6cDFE4FA3c35d54811087b3bC3Cd60F348"]
 ])
 
 export const factoryAddresses = new Map([
@@ -167,6 +188,7 @@ export const factoryAddresses = new Map([
   [Token.upBNB, "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"],
   [Token.upMatic, "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32"],
   [Token.upCake, "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"],
+  [Token.upCro, "0x06530550A48F990360DFD642d2132354A144F31d"]
 ])
 
 export const rootedRouterAddresses = new Map([
@@ -179,6 +201,7 @@ export const rootedTokenInBasePool = new Map([
   [Token.upBNB, 0],
   [Token.upMatic, 1],
   [Token.upCake, 1],
+  [Token.upCro, 1],
 ])
 
 export const routerName = new Map([
@@ -187,6 +210,7 @@ export const routerName = new Map([
   [Token.upBNB, "Panecakeswap"],
   [Token.upMatic, "Quickswap"],
   [Token.upCake, "Panecakeswap"],
+  [Token.upCro, "EmpireDex"],
 ])
 
 export const VAULT_ADDRESS = "0xaa360Bd89Ac14533940114cf7205DdF5e0CA7fa6"
@@ -312,6 +336,17 @@ export interface WalletInfo {
       },
       rpcUrls: ['https://polygon-rpc.com/'],
       blockExplorerUrls: ['https://polygonscan.com/'],
+    },
+    [25]: {
+      chainId: '0x19',
+      chainName: 'Cronos',
+      nativeCurrency: {
+        name: 'Cronos',
+        symbol: 'CRO',
+        decimals: 18,
+      },
+      rpcUrls: ['https://evm-cronos.crypto.org'],
+      blockExplorerUrls: ['https://cronoscan.com/']
     }
   }
 
@@ -348,6 +383,11 @@ export const UpCakeToken = new TokenInfo("upCAKE", rootedAddresses.get(Token.upC
 export const CakeLpToken = new TokenInfo("CAKE LP", basePoolAddresses.get(Token.upCake)!);
 export const ECakeLpToken = new TokenInfo("eCAKE LP", elitePoolAddresses.get(Token.upCake)!);
 
+export const CroToken = new TokenInfo("CRO", baseAddresses.get(Token.upCro)!);
+export const UpCroToken = new TokenInfo("upCRO", rootedAddresses.get(Token.upCro)!);
+export const CroLpToken = new TokenInfo("CRO LP", basePoolAddresses.get(Token.upCro)!);
+export const CroUSDCToken = new TokenInfo("USDC", usdAddresses.get(Token.upCro)!, 6);
+
 export const getTokenByAddress = (address: string) => { 
   if (address === WethToken.address) return WethToken
   if (address === KethToken.address) return KethToken
@@ -381,6 +421,11 @@ export const getTokenByAddress = (address: string) => {
   if (address === UpCakeToken.address) return UpCakeToken
   if (address === CakeLpToken.address) return CakeLpToken
   if (address === ECakeLpToken.address) return ECakeLpToken
+
+  if (address === CroToken.address) return CroToken
+  if (address === UpCroToken.address) return UpCroToken
+  if (address === CroLpToken.address) return CroLpToken
+  if (address === CroUSDCToken.address) return CroUSDCToken
 
   return undefined
 }

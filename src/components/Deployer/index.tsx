@@ -15,6 +15,7 @@ import SetSweeper from "./SetSweeper"
 import SetUnrestrictedController from "./SetUnrestrictedController"
 import SweepFloor from "./SweepFloor"
 import Transfer from "./Transfer"
+import UpCroSweepFloor from "./UpCroSweepFloor"
 
 const Wrapper = styled.div`
     display: grid;
@@ -55,6 +56,7 @@ const Deployer = () => {
     const [feesOpen, setFeesOpen] = useState<boolean>(false)
     const [dumpTaxOpen, setDumpTaxOpen] = useState<boolean>(false)
     const [sweepFloorOpen, setSweepFloorOpen] = useState<boolean>(false)
+    const [upCroSweepFloorOpen, setUpCroSweepFloorOpen] = useState<boolean>(false)
     const [sweeperOpen, setSweeperOpen] = useState<boolean>(false)
     const [transferOpen, setTransferOpen] = useState<boolean>(false)
     const [transferTokenAddress, setTransferTokenAddress] = useState<string>(baseAddress)
@@ -75,6 +77,7 @@ const Deployer = () => {
             <SetFees isOpen={feesOpen} onDismiss={() => setFeesOpen(false)} />
             <SetDumpTax isOpen={dumpTaxOpen} onDismiss={() => setDumpTaxOpen(false)} />
             <SweepFloor tokenAddress={eliteAddress} isOpen={sweepFloorOpen} onDismiss={() => setSweepFloorOpen(false)} />
+            <UpCroSweepFloor isOpen={upCroSweepFloorOpen} onDismiss={() => setUpCroSweepFloorOpen(false)} />
             <SetSweeper isOpen={sweeperOpen} onDismiss={() => setSweeperOpen(false)} />            
             <Transfer tokenAddress={transferTokenAddress} isOpen={transferOpen} onDismiss={() => setTransferOpen(false)}/>
 
@@ -92,9 +95,9 @@ const Deployer = () => {
             </SectionWrapper>
 
             <SectionWrapper>
-                <SectionHeader>Elite ({eliteTicker})</SectionHeader>
+                <SectionHeader>{token !== Token.upCro ? `Elite (${eliteTicker})` : rootedTicker}</SectionHeader>
                 <SectionContent>
-                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setSweepFloorOpen(true)}>Sweep Floor</ButtonPrimary>
+                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => token === Token.upCro ? setUpCroSweepFloorOpen(true) : setSweepFloorOpen(true)}>Sweep Floor</ButtonPrimary>
                     <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => setSweeperOpen(true)}>Set Sweeper</ButtonPrimary>
                 </SectionContent>
             </SectionWrapper>
@@ -103,10 +106,10 @@ const Deployer = () => {
                 <SectionHeader>Transfer</SectionHeader>
                 <SectionContent>
                     <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(baseAddress)}>{baseTicker}</ButtonPrimary>
-                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(eliteAddress)}>{eliteTicker}</ButtonPrimary>
+                    {token !== Token.upCro && <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(eliteAddress)}>{eliteTicker}</ButtonPrimary> }
                     <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(rootedAddress)}>{rootedTicker}</ButtonPrimary>
-                    {token !== Token.upTether &&<ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(basePoolAddress)}>{baseTicker} LP</ButtonPrimary> }
-                    <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(elitePoolAddress)}>{eliteTicker} LP</ButtonPrimary>
+                    {token !== Token.upTether && <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(basePoolAddress)}>{baseTicker} LP</ButtonPrimary> }
+                    {token !== Token.upCro && <ButtonPrimary disabled={!supportedChain(chainId!, token)} onClick={() => transfer(elitePoolAddress)}>{eliteTicker} LP</ButtonPrimary>}
                 </SectionContent>
             </SectionWrapper>
 

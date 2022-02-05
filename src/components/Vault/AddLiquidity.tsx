@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { eliteAddresses, getTokenByAddress, vaultAddresses } from "../../constants"
+import { baseAddresses, getTokenByAddress, vaultAddresses } from "../../constants"
 import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
@@ -35,7 +35,7 @@ const AddLiquidity = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: stri
     }
 
     return (
-        <ActionModal isOpen={isOpen} onDismiss={close} action={addLiquidity} title={`Add ${tokenAddress === eliteAddresses.get(token)! ? "Elite" : "Base"} liquidity`}>
+        <ActionModal isOpen={isOpen} onDismiss={close} action={addLiquidity} title={`Add ${tokenAddress === baseAddresses.get(token)! ? "Base" : "Elite"} liquidity`}>
             <CurrencyInput
                 value={value}
                 balance={balance}

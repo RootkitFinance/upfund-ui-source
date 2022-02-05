@@ -55,6 +55,6 @@ export default function PriceStatus()
     return (
     <Wrapper>
         {token !== Token.upTether && <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.basePool} ${baseTicker}` : null}</div> }
-        <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.elitePool} ${eliteTicker}` : null}</div>
+        {token !== Token.upCro && <div>{loading ? <BalanceLoader/> : priceStatus ? `${priceStatus.elitePool} ${eliteTicker}` : null}</div> }
     </Wrapper>)
 }

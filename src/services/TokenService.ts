@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts'
 import erc20Abi from '../constants/abis/erc20.json'
 import { Web3Provider } from '@ethersproject/providers'
 import { AddressBalanceInfo } from '../dtos/AddressBalanceInfo';
-import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, vaultAddresses, feeSplitterAddresses} from '../constants';
+import { DEPLOYER_ADDRESS, getTokenByAddress, Token, baseAddresses, eliteAddresses, rootedAddresses, basePoolAddresses, elitePoolAddresses, vaultAddresses, feeSplitterAddresses, usdAddresses} from '../constants';
 import { TokenBalanceInfo } from '../dtos/TokenBalanceInfo';
 import BigNumber from 'bignumber.js';
 import { getDisplayBalance, getFullDisplayBalance } from '../utils/formatBalance';
@@ -34,23 +34,30 @@ export class TokenService {
         this.addressToTokensMap.set(eliteAddresses.get(token)!, [ this.baseToken ])
         this.addressToTokensMap.set(DEPLOYER_ADDRESS, token === Token.upTether 
             ? [ this.baseToken, this.eliteToken, this.rootedToken, this.elitePoolToken ] 
+            : token === Token.upCro 
+            ? [ this.baseToken, this.rootedToken, this.basePoolToken ] 
             : [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ]);
 
         this.addressToTokensMap.set(vaultAddresses.get(token)!, token === Token.upTether 
             ? [ this.baseToken, this.eliteToken, this.rootedToken, this.elitePoolToken ] 
+            : token === Token.upCro 
+            ? [ this.baseToken, this.rootedToken, getTokenByAddress(usdAddresses.get(token)!)!, this.basePoolToken ] 
             : [ this.baseToken, this.eliteToken, this.rootedToken, this.basePoolToken, this.elitePoolToken ]);
 
         this.tokenToContractMap = new Map<string, Contract>()
         const signer = library.getSigner(account).connectUnchecked();
         this.tokenToContractMap.set(this.baseToken.address, new Contract(this.baseToken.address, erc20Abi, signer))
-        this.tokenToContractMap.set(this.eliteToken.address, new Contract(this.eliteToken.address, erc20Abi, signer))
+        if (token !== Token.upCro) {
+            this.tokenToContractMap.set(this.eliteToken.address, new Contract(this.eliteToken.address, erc20Abi, signer));
+            this.tokenToContractMap.set(this.elitePoolToken.address, new Contract(this.elitePoolToken.address, erc20Abi, signer));
+        }
         this.tokenToContractMap.set(this.rootedToken.address, new Contract(this.rootedToken.address, erc20Abi, signer))
-        
+        if (token === Token.upCro) {           
+            this.tokenToContractMap.set(usdAddresses.get(token)!, new Contract(usdAddresses.get(token)!, erc20Abi, signer));            
+        }
         if (token !== Token.upTether) {
             this.tokenToContractMap.set(this.basePoolToken.address, new Contract(this.basePoolToken.address, erc20Abi, signer))
-        }
-        
-        this.tokenToContractMap.set(this.elitePoolToken.address, new Contract(this.elitePoolToken.address, erc20Abi, signer))
+        }       
     }
 
     public async getFeeSplitterBalance() {
@@ -140,13 +147,18 @@ export class TokenService {
         return await tokenContract.transfer(recipient, parseEther(amount))
     }
 
-    public async getPrices() {       
-        const elitePoolInfo =  await this.getElitePoolInfo();
-        if (this.token === Token.upTether)
-        {
+    public async getPrices() {        
+        if (this.token === Token.upTether) {
+            const elitePoolInfo = await this.getElitePoolInfo();
             return new PriceInfo(elitePoolInfo.rootPrice, elitePoolInfo.rootPrice)
         }
-        const basePoolInfo =  await this.getBasePoolInfo();
+        if (this.token === Token.upCro) {
+            const basePoolInfo = await this.getBasePoolInfo();
+            return new PriceInfo(basePoolInfo.rootPrice, basePoolInfo.rootPrice)
+        }
+
+        const elitePoolInfo = await this.getElitePoolInfo();
+        const basePoolInfo = await this.getBasePoolInfo();
         return new PriceInfo(basePoolInfo.rootPrice, elitePoolInfo.rootPrice)
     }
 }

@@ -25,8 +25,7 @@ const Fees = () => {
     const [buyFees, setBuyFees] = useState<number>();
     const [sellFees, setSellFees] = useState<number>();
 
-    useEffect(() => {
-        
+    useEffect(() => {        
         const getFees = async () => {
             const service = new TransferGateService(token, library, account!);
             setBuyFees(await service.getBuyFees());
@@ -36,7 +35,7 @@ const Fees = () => {
             getFees();
         }
        
-    }, [token])
+    }, [token, chainId])
     return (
         <Wrapper>
           <span>Buy Fees</span>

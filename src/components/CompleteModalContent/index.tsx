@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { getEtherscanLink } from '../../utils'
+import { getEtherscanLabel, getEtherscanLink } from '../../utils'
 import { TYPE } from '../../theme'
 import { X, CheckCircle } from 'react-feather'
 import { AutoColumn, ColumnCenter } from '../Column'
@@ -52,7 +52,7 @@ export function CompleteModalContent({
         <AutoColumn gap="100px" justify={'center'}>
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')} style={{ marginLeft: '0.125em' }}>
-              <TYPE.subHeader>View transaction on Etherscan</TYPE.subHeader>
+              <TYPE.subHeader>{getEtherscanLabel(chainId)}</TYPE.subHeader>
             </ExternalLink>
           )}
         </AutoColumn>

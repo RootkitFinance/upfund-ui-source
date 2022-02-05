@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { eliteAddresses, vaultAddresses } from "../../constants"
+import { baseAddresses, Token, vaultAddresses } from "../../constants"
 import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { supportedChain } from "../../utils";
+import { UpCroVaultService } from "../../services/UpCroVaultService";
 
 const RemoveLiquidity = ({ tokenAddress, lpAddress, isOpen, onDismiss } : { tokenAddress: string, lpAddress:string, isOpen: boolean, onDismiss: () => void }) => {
     const { account, library, chainId } = useWeb3React()
@@ -24,7 +25,9 @@ const RemoveLiquidity = ({ tokenAddress, lpAddress, isOpen, onDismiss } : { toke
     const removeLiquidity = async () => {
         const amount = parseFloat(value)
         if (!Number.isNaN(amount) && amount > 0) {
-            return await new VaultService(token, library, account!).removeLiquidity(tokenAddress, value)
+            return token === Token.upCro 
+                ? await new UpCroVaultService(library, account!).removeLiquidity(value) 
+                : await new VaultService(token, library, account!).removeLiquidity(tokenAddress, value)
         }
     }
 
@@ -34,7 +37,7 @@ const RemoveLiquidity = ({ tokenAddress, lpAddress, isOpen, onDismiss } : { toke
     }
 
     return (
-        <ActionModal isOpen={isOpen} onDismiss={close} action={removeLiquidity} title={`Remove ${tokenAddress === eliteAddresses.get(token)! ? "Elite" : "Base"} liquidity`}>
+        <ActionModal isOpen={isOpen} onDismiss={close} action={removeLiquidity} title={`Remove ${tokenAddress === baseAddresses.get(token)! ? "Base" : "Elite"} liquidity`}>
             <CurrencyInput
                 value={value}
                 balance={balance}

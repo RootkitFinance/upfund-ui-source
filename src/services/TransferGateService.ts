@@ -27,11 +27,13 @@ export class TransferGateService {
 
     public async getSellFees() {
         const poolAddress = this.token === Token.upTether ? elitePoolAddresses.get(this.token)! : basePoolAddresses.get(this.token)!
-        const dumpTax = await this.contract.getDumpTax();
-        const poolTax = await this.contract.poolsTaxRates(poolAddress);
-        let totalTax = parseFloat((poolTax).toString()) + parseFloat((dumpTax).toString());
+        const dumpTax = parseFloat((await this.contract.getDumpTax()).toString())
+        const poolTax = parseFloat((await this.contract.poolsTaxRates(poolAddress)).toString())
+        let totalTax = poolTax + dumpTax;
 
         if (this.token !== Token.ROOT){
+            const rate = parseFloat((await this.contract.feesRate()).toString());
+            totalTax = poolTax > rate ? totalTax : rate;
             return totalTax/100;
         }
         

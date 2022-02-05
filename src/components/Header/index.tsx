@@ -147,6 +147,7 @@ export default function Header() {
         <Option active={selectedToken === Token.upBNB} onClick={() => setSelectedToken(Token.upBNB)}>upBNB</Option>
         <Option active={selectedToken === Token.upMatic} onClick={() => setSelectedToken(Token.upMatic)}>upMatic</Option>
         <Option active={selectedToken === Token.upCake} onClick={() => setSelectedToken(Token.upCake)}>upCake</Option>
+        <Option active={selectedToken === Token.upCro} onClick={() => setSelectedToken(Token.upCro)}>upCro</Option>
       </LinksWrapper>
       <HeaderControls>
         {suppotedChain && <PriceStatus />}

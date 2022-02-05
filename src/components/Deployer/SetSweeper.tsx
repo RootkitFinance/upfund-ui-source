@@ -7,7 +7,7 @@ import AddressInput from "../AddressInput"
 import Toggle from "../Toggle";
 import styled from "styled-components";
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
-import { eliteAddresses } from "../../constants";
+import { eliteAddresses, rootedAddresses, Token } from "../../constants";
 
 const ToggleWrapper = styled.div`
     display: grid;
@@ -30,7 +30,7 @@ const SetSweeper = ({ isOpen, onDismiss } : { isOpen: boolean, onDismiss: () => 
     
     const setSweeper = async () => {        
         if (address && isAddress(address)) {
-            return await new Erc31337Service(library, account!).setSweeper(eliteAddresses.get(token)!, address, allow)  
+            return await new Erc31337Service(library, account!).setSweeper(token === Token.upCro ? rootedAddresses.get(token)! : eliteAddresses.get(token)!, address, allow)  
         }
     }
 

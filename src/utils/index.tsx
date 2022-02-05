@@ -21,14 +21,16 @@ export function shortenAddress(address: string, chars = 4): string {
 
 const ETHERSCAN_PREFIXES: { [chainId in number]: string } = {
   1: 'etherscan.io',
-  56: 'bscscan.com',
- 137: 'polygonscan.com',
+ 56: 'bscscan.com',
+137: 'polygonscan.com',
+ 25: 'cronoscan.com',
 }
 
 const ETHERSCAN_LABELS: { [chainId in number]: string } = {
   1: 'Etherscan',
-  56: 'Bscscan',
- 137: 'Polygonscan',
+ 56: 'Bscscan',
+137: 'Polygonscan',
+ 25: 'Cronoscan'
 }
 
 export function getEtherscanLink(

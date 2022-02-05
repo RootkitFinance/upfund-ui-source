@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState } from "react"
 import CurrencyInput from "../CurrencyInput"
 import { TokenService } from "../../services/TokenService";
 import { useWeb3React } from "@web3-react/core"
-import { getTokenByAddress, vaultAddresses } from "../../constants"
+import { getTokenByAddress, Token, vaultAddresses } from "../../constants"
 import { VaultService } from "../../services/VaultService"
 import ActionModal from "../ActionModal"
 import { ControlCenterContext } from "../../contexts/ControlCenterContext";
 import { supportedChain } from "../../utils";
+import { UpCroVaultService } from "../../services/UpCroVaultService";
 
-const BuyRoot = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, isOpen: boolean, onDismiss: () => void }) => {
+const BuyRooted = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, isOpen: boolean, onDismiss: () => void }) => {
     const { account, library, chainId } = useWeb3React()
     const [value, setValue] = useState<string>("")
     const [balance, setBalance] = useState<string>("")
@@ -27,7 +28,9 @@ const BuyRoot = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, i
     const buyRoot = async () => {
         const amount = parseFloat(value)
         if (!Number.isNaN(amount) && amount > 0) {
-            return await new VaultService(token, library, account!).buyRooted(tokenAddress, value)
+            return token === Token.upCro 
+                ? await new UpCroVaultService(library, account!).buyRooted(value) 
+                : await new VaultService(token, library, account!).buyRooted(tokenAddress, value);
         }
     }
 
@@ -52,4 +55,4 @@ const BuyRoot = ({ tokenAddress, isOpen, onDismiss } : { tokenAddress: string, i
     )
 }
 
-export default BuyRoot
+export default BuyRooted

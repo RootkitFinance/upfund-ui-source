@@ -47,8 +47,7 @@ export const App = () => {
               <Web3ReactManager>
                 <ToastProvider>
                   <Switch>
-                    <Route exact strict path="/" component={Home} />
-                    <Route exact strict path="/:token" component={Home} />                   
+                    <Route exact strict path="/" component={Home} />            
                   </Switch>
                   </ToastProvider>
                 </Web3ReactManager>
