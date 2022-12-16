@@ -84,7 +84,7 @@ export const eliteAddresses = new Map([
   [Token.ROOT, "0x93747501F46Ae40b8A4B8F1a1529696AE24ea04e"],
   [Token.upTether, "0xbFDF833E65Bd8B27c84fbE55DD17F7648C532168"],
   [Token.upBNB, "0xb7db0850096aeaec1b615463202db441012c564f"],
-  [Token.upMatic, "0x63ed7f9D97d6658E46dDA23e50DdF82D86070580"],
+  [Token.upMatic, "0xcd0610e3b1Af3d86D4E046648B3BFE412b64c6F1"],
   [Token.upCake, "0x5C8E4C13c7db38C331eb85C114eb08d1BCd2f3c6"],
   [Token.upCro, "0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23"]
 ])
@@ -122,7 +122,7 @@ export const elitePoolAddresses = new Map([
   [Token.ROOT, "0x44ee37ba8c98493f2590811c197ddd474c911d46"],
   [Token.upTether, "0x50db5be8c0c878e28fe231c647ef41b395463ffb"],
   [Token.upBNB, "0x0C51ec4743C1ae6be3c193926BA04458A56e4437"],
-  [Token.upMatic, "0xF63E5bfDC51C0236Ef662f02738c482f91f37B24"],
+  [Token.upMatic, "0x5B06c3600dafdd2B11e0127316BfD8604D31d428 "],
   [Token.upCake, "0x9dC5207bb1CF76374443Fbc474fFf6bEC6D65223"],
 ])
 
@@ -130,7 +130,7 @@ export const vaultAddresses = new Map([
   [Token.ROOT, "0xc547D2bc0C3606602a4C9A530BFadDBc07A7f06F"],
   [Token.upTether, "0x3B2688B05B40C23bc5EA11b116733cD282450207"],
   [Token.upBNB, "0xe6Fc0Bef42a263dcC375a82Fa36Ee520Fce2F6c4"],
-  [Token.upMatic, "0xd9E0b819B782CF7e1b554c750964dC4D8c92e1EB"],
+  [Token.upMatic, "0x6140c850140175f25ce0798f41aec9829458eb28"],
   [Token.upCake, "0x816b55f5afa643fd60D5Ee17C5733b0f33197ff9"],
   [Token.upCro, "0x2774A22C1fE0d2561432C58ebE65a65664a25100"]
 ])
@@ -139,7 +139,7 @@ export const calculatorAddresses = new Map([
   [Token.ROOT, "0xA12C55637E642C0e79C5923125cd7eeb8be3a53F"],
   [Token.upTether, "0xdc436261C356E136b1671442d0bD0Ae183a6d77D"],
   [Token.upBNB, "0x2Cf93f951C44980Fb1790524d4f1a32A5dC7dadC"],
-  [Token.upMatic, "0x387b14c7f3d72679314567a063735f63632b127f"],
+  [Token.upMatic, "0xCa94c2f077d4762B135B239658E8b559991014EB"],
   [Token.upCake, "0x5C7725822912FA938f7A0164E4Ae925cDbdC0510"],
   [Token.upCro, "0xc9aE79B03F1913d9CBe8FB973596dF64a3774Eed"]
 ])
