@@ -122,7 +122,7 @@ export const elitePoolAddresses = new Map([
   [Token.ROOT, "0x44ee37ba8c98493f2590811c197ddd474c911d46"],
   [Token.upTether, "0x50db5be8c0c878e28fe231c647ef41b395463ffb"],
   [Token.upBNB, "0x0C51ec4743C1ae6be3c193926BA04458A56e4437"],
-  [Token.upMatic, "0x5B06c3600dafdd2B11e0127316BfD8604D31d428 "],
+  [Token.upMatic, "0x5B06c3600dafdd2B11e0127316BfD8604D31d428"],
   [Token.upCake, "0x9dC5207bb1CF76374443Fbc474fFf6bEC6D65223"],
 ])
 
